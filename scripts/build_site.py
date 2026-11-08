@@ -21,6 +21,9 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from seo_content import TOPICS, topic_slug, seo_title, seo_summary, documented_points, chapters, video_reference, related_videos
+
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / 'site'
 ARCHIVE = ROOT / 'data' / 'catalogue.json'
@@ -221,16 +224,18 @@ def date_fr(iso: str) -> str:
 
 def card(v: dict, base_path: str) -> str:
     href = path_url(base_path, 'videos/' + v['id'] + '/')
+    public_title = seo_title(v)
+    summary = seo_summary(v)
     dur = v.get('duration_seconds')
     duration = f'{dur // 60}:{dur % 60:02d}' if dur is not None else ''
     return f'''<article class="video-card">
-<a href="{escape(href)}" class="thumb-link" aria-label="Voir {escape(v['title'])}">
-<img src="{escape(v['thumbnail'])}" alt="Miniature : {escape(v['title'])}" loading="lazy" width="480" height="270">
+<a href="{escape(href)}" class="thumb-link" aria-label="Voir {escape(public_title)}">
+<img src="{escape(v['thumbnail'])}" alt="Miniature : {escape(public_title)}" loading="lazy" width="480" height="270">
 <span class="thumb-play" aria-hidden="true">▶</span>{'<span class="duration">' + duration + '</span>' if duration else ''}
-</a><div class="card-content"><h3><a href="{escape(href)}">{escape(v['title'])}</a></h3>
+</a><div class="card-content"><h3><a href="{escape(href)}">{escape(public_title)}</a></h3>
 <span class="eyebrow">La chaîne du bricolage · {escape(v['category'])}{' · Short' if v['short'] else ''}</span>
-<p>{escape(shorten(v['description'], 88) or 'Retrouvez cette vidéo sur YouTube.')}</p>
-<div class="card-footer"><span>{escape(date_fr(v['published']))}</span><a href="{escape(href)}" aria-label="Découvrir {escape(v['title'])}">Voir la vidéo ↗</a></div></div></article>'''
+<p>{escape(shorten(summary, 88))}</p>
+<div class="card-footer"><span>{escape(date_fr(v['published']))}</span><a href="{escape(href)}" aria-label="Découvrir {escape(public_title)}">Voir la vidéo ↗</a></div></div></article>'''
 
 def logo(base_path: str) -> str:
     avatar = path_url(base_path, 'assets/chaine-logo.jpg')
@@ -279,7 +284,7 @@ def homepage(videos: list[dict], base_path: str, site_url: str) -> str:
     header = f'''<div class="channel-wrap"><div class="container"><div class="channel-banner"><img src="{banner_src}" alt="Bannière officielle de La chaîne du bricolage, bleue et orange" width="1776" height="616"></div><div class="channel-profile"><img class="profile-avatar" src="{logo_src}" alt="Logo officiel de La chaîne du bricolage" width="102" height="102"><div class="profile-info"><h1>La chaîne du bricolage</h1><p class="profile-handle">@Lachainedubricolage · Tutoriels & tests d’outillage</p><p class="profile-bio">La chaîne d’un bricoleur pour les bricoleurs. Apprenez les bons gestes et réalisez vos projets vous-même.</p></div><a class="subscribe-btn" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">▶ &nbsp;S’abonner sur YouTube</a></div><nav class="channel-tabs" aria-label="Rubriques de la chaîne"><a href="{escape(base_path)}" aria-current="page">Accueil</a><a href="{escape(path_url(base_path, 'catalogue/'))}">Vidéos</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a><a href="{escape(path_url(base_path, 'catalogue/?categorie=Tests%20%26%20outillage'))}">Tests d’outillage</a><a href="{escape(path_url(base_path, 'catalogue/?categorie=Plomberie'))}">Plomberie</a><a href="{escape(path_url(base_path, 'catalogue/?categorie=Chauffage'))}">Chauffage</a></nav></div></div>'''
     welcome = f'''<section class="home-main"><div class="container"><div class="welcome-strip"><div class="welcome-copy"><span class="label-row">BIENVENUE SUR LA CHAÎNE</span><h2>Le bricolage,<br><em>à la portée de tous.</em></h2><p>Plomberie, chauffage, rénovation et outillage : des démonstrations claires, des astuces utiles et des tests concrets pour avancer dans vos projets.</p><div class="welcome-actions"><a class="btn btn-primary" href="{escape(path_url(base_path, 'catalogue/'))}">Découvrir les tutoriels →</a><a class="btn btn-outline" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Voir sur YouTube ▶</a></div></div>{featured}</div></div></section>'''
     themes=[('Chauffage','♨','Chauffage'),('Plomberie','⌁','Plomberie'),('Tests & outillage','⚒','Tests & outillage'),('Rénovation','▱','Rénovation'),('Électricité','ϟ','Électricité')]
-    theme_cards=''.join(f'<a class="theme-card" href="{escape(path_url(base_path, "catalogue/?categorie=" + urllib.parse.quote(c)))}"><span class="theme-glyph" aria-hidden="true">{icon}</span><strong>{escape(label)}</strong></a>' for label, icon,c in themes)
+    theme_cards=''.join(f'<a class="theme-card" href="{escape(path_url(base_path, "sujets/" + topic_slug(c) + "/"))}"><span class="theme-glyph" aria-hidden="true">{icon}</span><strong>{escape(label)}</strong></a>' for label, icon,c in themes)
     sections=f'''<section class="section-top"><div class="container"><div class="section-heading"><div><span class="overline">RETROUVEZ VOS SUJETS</span><h2>Qu’est-ce qu’on bricole aujourd’hui ?</h2></div><p>Un sujet, un bon geste, le bon tuto. Explorez la chaîne selon vos besoins.</p></div><div class="theme-grid">{theme_cards}</div></div></section>
 <section class="listing-section"><div class="container"><div class="section-heading"><div><span class="overline">LES NOUVEAUTÉS DE LA CHAÎNE</span><h2>Dernières vidéos & Shorts</h2></div><a class="text-link" href="{escape(path_url(base_path, 'catalogue/'))}">Voir toutes les vidéos →</a></div>{render_grid(videos[:9],base_path)}<div class="center-action"><a class="btn btn-dark" href="{escape(path_url(base_path, 'catalogue/'))}">Explorer toutes les vidéos →</a></div></div></section>
 <section class="mission"><div class="container mission-inner"><div class="mission-graphic" aria-hidden="true"><span>APPRENDRE.</span><span>BRICOLER.</span><span>RÉUSSIR.</span></div><div class="mission-copy"><span class="overline">LA PHILOSOPHIE DE LA CHAÎNE</span><h2>Du concret, pour <em>bricoler soi-même.</em></h2><p>Débutant ou passionné, retrouvez des tutos, des essais d’outillage à main et électroportatif, et des explications utiles sans discours promotionnel inutile.</p><a class="btn btn-primary" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Rejoindre la chaîne YouTube →</a></div></div></section>
@@ -292,23 +297,42 @@ def catalogue_page(videos: list[dict], base_path: str, site_url: str) -> str:
     return layout('Toutes les vidéos | La chaîne du bricolage', 'Retrouvez et recherchez tous les tutoriels, les astuces bricolage et les tests d’outillage publiés sur La chaîne du bricolage.', content, base_path, site_url)
 
 
+def topic_page(category: str, videos: list[dict], base_path: str, site_url: str) -> str:
+    slug, subtitle = TOPICS[category]
+    selection = [v for v in videos if v.get('category') == category]
+    breadcrumb = f'<nav aria-label="Fil d’Ariane"><a href="{escape(base_path)}">Accueil</a> / <a href="{escape(path_url(base_path, "catalogue/"))}">Vidéos</a> / {escape(category)}</nav>'
+    content = f'<section class="catalog-head"><div class="container">{breadcrumb}<span class="overline">NOS VIDÉOS PAR SUJET</span><h1>{escape(category)}</h1><p>{escape(subtitle)}</p><p>{len(selection)} vidéos et Shorts classés dans cette rubrique.</p></div></section><section class="catalog-section"><div class="container">{render_grid(selection, base_path)}<p><a href="{escape(path_url(base_path, "catalogue/"))}">Voir toutes les vidéos et les autres thèmes ↗</a></p></div></section>'
+    schema = json.dumps({'@context':'https://schema.org', '@type':'CollectionPage', 'name':category + ' – La chaîne du bricolage', 'url':site_url, 'description':subtitle, 'inLanguage':'fr-FR'},ensure_ascii=False)
+    return layout(category + ' : tutoriels et vidéos | La chaîne du bricolage',subtitle,content,base_path,site_url,schema=schema)
+
+
 def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> str:
     description = v['description'].strip() or 'Découvrez la démonstration complète en vidéo sur La chaîne du bricolage.'
-    related = [x for x in videos if x['id'] != v['id'] and x['category'] == v['category']][:3]
-    if len(related) < 3:
-        related += [x for x in videos if x['id'] != v['id'] and x not in related][:3 - len(related)]
+    display_title = seo_title(v)
+    summary = seo_summary(v)
+    topics = documented_points(description)
+    timeline = chapters(description, v['id'])
+    full_video = video_reference(description, v['id'], videos)
+    topic_href = path_url(base_path, 'sujets/' + topic_slug(v['category']) + '/')
+    topic_link = f'<p class="seo-topic-ref">Explorer les autres vidéos : <a href="{escape(topic_href)}">{escape(v["category"])}</a></p>'
+    points_html = ('<section class="documented-points"><h2>Dans ce tutoriel</h2><p>Points indiqués dans la description publiée par la chaîne :</p><ul>' + ''.join('<li>' + escape(point) + '</li>' for point in topics) + '</ul></section>') if topics else ''
+    timeline_html = ('<section class="documented-chapters"><h2>Chapitres indiqués par la chaîne</h2><ol>' + ''.join(f'<li><a href="{escape(ch["url"])}" target="_blank" rel="noopener noreferrer"><time>{escape(ch["stamp"])}</time> {escape(ch["label"])}</a></li>' for ch in timeline) + '</ol></section>') if timeline else ''
+    full_html = (f'<aside class="full-video-link"><strong>Voir le tutoriel complet</strong><p>Cette vidéo courte renvoie à une démonstration plus longue :</p><a href="{escape(path_url(base_path, "videos/" + full_video["id"] + "/"))}">{escape(seo_title(full_video))} ↗</a></aside>') if full_video else ''
+    related = related_videos(v, videos, limit=4)
     iso = v['published']
     schema = {'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': shorten(description, 4000), 'thumbnailUrl': [v['thumbnail']], 'embedUrl': f'https://www.youtube-nocookie.com/embed/{v["id"]}', 'sameAs': v['url'], 'inLanguage': 'fr-FR', 'publisher': {'@type': 'Organization', 'name': CHANNEL_NAME, 'sameAs': CHANNEL_URL}}
     if iso: schema['uploadDate'] = iso
     if v.get('duration_seconds') is not None: schema['duration'] = f'PT{v["duration_seconds"]}S'
+    if timeline:
+        schema['hasPart'] = [{'@type': 'Clip', 'name': ch['label'], 'startOffset': ch['start'], 'url': ch['url']} for ch in timeline]
     if site_url:
         schema['mainEntityOfPage'] = site_url
         schema['url'] = site_url
     else:
         schema['url'] = v['url']
     desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
-    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(v['title'])}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(v['title'])}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que vous allez découvrir</h2>{desc_html}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
-    return layout(f'{v["title"]} | La chaîne du bricolage', shorten(description, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
+    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(display_title)}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(display_title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que la chaîne présente</h2><p class="seo-summary">{escape(summary)}</p>{points_html}{timeline_html}{full_html}{desc_html}{topic_link}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
+    return layout(f'{display_title} | La chaîne du bricolage', shorten(summary, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
 
 
 def build(videos: list[dict], site_url: str) -> None:
@@ -327,9 +351,16 @@ def build(videos: list[dict], site_url: str) -> None:
     (OUTPUT / 'index.html').write_text(homepage(videos, base_path, absolute()), encoding='utf-8')
     (OUTPUT / 'catalogue').mkdir()
     (OUTPUT / 'catalogue' / 'index.html').write_text(catalogue_page(videos, base_path, absolute('catalogue/')), encoding='utf-8')
+    topics_folder = OUTPUT / 'sujets'
+    topics_folder.mkdir()
+    for topic, (slug, _) in TOPICS.items():
+        folder = topics_folder / slug
+        folder.mkdir()
+        (folder / 'index.html').write_text(topic_page(topic, videos, base_path, absolute('sujets/' + slug + '/')), encoding='utf-8')
     data_dir = OUTPUT / 'data'
     data_dir.mkdir()
-    (data_dir / 'videos.json').write_text(json.dumps(videos, indent=2, ensure_ascii=False), encoding='utf-8')
+    public_videos = [dict(v, seo_title=seo_title(v), seo_summary=seo_summary(v)) for v in videos]
+    (data_dir / 'videos.json').write_text(json.dumps(public_videos, indent=2, ensure_ascii=False), encoding='utf-8')
     urls = [(absolute(), None), (absolute('catalogue/'), None)] if site_url else []
     for v in videos:
         directory = OUTPUT / 'videos' / v['id']
@@ -341,6 +372,7 @@ def build(videos: list[dict], site_url: str) -> None:
         pages = [
             f'<url><loc>{escape(absolute())}</loc></url>',
             f'<url><loc>{escape(absolute("catalogue/"))}</loc></url>',
+            *(f'<url><loc>{escape(absolute("sujets/" + slug + "/"))}</loc></url>' for slug, _ in TOPICS.values()),
         ]
         for v in videos:
             url = absolute('videos/' + v['id'] + '/')
