@@ -24,3 +24,16 @@
 .video-chapters li a:hover{text-decoration:underline}
 .video-chapters time{font-variant-numeric:tabular-nums;display:inline-block;min-width:62px;color:#a36411}
 .video-chapters p{font-size:12px;color:#738394}
+
+/* V3 — contenu de recherche fidèle aux descriptions YouTube */
+.seo-summary{font-size:1.05rem;line-height:1.75;color:#25425d;padding:14px 0}
+.documented-points,.documented-chapters,.full-video-link,.seo-topic-ref{margin:24px 0;padding:18px 22px;border:1px solid #dce8f2;background:#f7fafd;border-radius:14px}
+.documented-points h2,.documented-chapters h2{font-size:1.35rem;margin:0 0 10px}
+.documented-points ul,.documented-chapters ol{margin:12px 0;padding-left:22px}
+.documented-points li,.documented-chapters li{margin:8px 0;line-height:1.6}
+.documented-chapters time{font-variant-numeric:tabular-nums;color:#b26b0b;font-weight:700;margin-right:6px}
+.full-video-link{border-color:#ffc67c;background:#fffaf2}
+.full-video-link strong{display:block;font-size:1.18rem;color:#234b76}
+.full-video-link a,.seo-topic-ref a,.documented-chapters a{color:#145c8f;font-weight:650;text-decoration:underline;text-underline-offset:3px}
+.catalog-head nav[aria-label="Fil d’Ariane"]{font-size:.85rem;margin-bottom:22px}
+.catalog-head nav[aria-label="Fil d’Ariane"] a{color:inherit;text-decoration:underline}
