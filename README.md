@@ -37,3 +37,21 @@ Le programme utilise seulement des métadonnées YouTube publiques. Les vidéos 
 6. Dans [Actions](https://github.com/lachainedubricolage/la-chaine-du-bricolage/actions/workflows/site-auto.yml), sélectionner « Site — mise à jour YouTube et publication » et cliquer sur **Run workflow**. Le rapport d'exécution affiche le nombre de vidéos récupérées. Si aucun rapport d'import complet n'apparaît, vérifier les étapes et la clé.
 
 L'import lit la playlist publique des mises en ligne de la chaîne et récupère les métadonnées des vidéos par lots. Les vidéos privées ne sont pas affichées. Le classement des Shorts par durée est indicatif : une vidéo courte n'est pas automatiquement un Short au sens de YouTube. Le script conserve les vidéos précédemment enregistrées si l'API est momentanément indisponible.
+
+
+## Référencement Google, Bing et recherche IA
+
+- Le lecteur YouTube est présent dans le HTML de chaque vidéo (iframe), sans clic initial.
+- Chaque page utilise une URL canonique, les métadonnées VideoObject avec les données YouTube, et des instructions d'indexation ouvertes.
+- Le sitemap.xml est enrichi avec la section video:video : titre, description, miniature, date, durée et URL du lecteur. Il est régénéré automatiquement.
+- Les chapitres ne sont affichés que lorsqu'ils sont effectivement présents dans les descriptions YouTube. Aucun conseil technique n'est inventé par le site.
+- La découverte par Google ou les agents IA dépend des moteurs et n'est pas une garantie de classement ou de recommandation.
+
+### Pour valider l'indexation (action du propriétaire)
+1. Google Search Console : https://search.google.com/search-console/welcome → ajouter la propriété avec le préfixe `https://lachainedubricolage.github.io/la-chaine-du-bricolage/` et suivre la validation Google.
+2. Dans Search Console, aller dans **Sitemaps** et soumettre `https://lachainedubricolage.github.io/la-chaine-du-bricolage/sitemap.xml`.
+3. Bing Webmaster Tools : https://www.bing.com/webmasters/ → importer la propriété Google Search Console ou vérifier la propriété, puis soumettre le même sitemap.
+4. Ajouter le lien du site dans les liens de la chaîne YouTube et les descriptions des vidéos concernées.
+5. Vérifier le rapport Vidéos, les impressions et les clics dans Search Console ; aucune indexation n'est garantie.
+
+**Attention** : un fichier robots.txt placé sous `/la-chaine-du-bricolage/` n'a pas l'autorité sur le robots.txt du domaine racine `github.io` ; les directives `meta robots` de chaque page restent utiles.
