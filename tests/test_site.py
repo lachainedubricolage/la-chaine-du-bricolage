@@ -78,6 +78,30 @@ class SiteTests(unittest.TestCase):
                 self.assertIn('seo_title', data[0])
                 self.assertIn('seo_summary', data[0])
 
+    def test_v3_indexnow_tracks_only_changed_videos(self):
+        import importlib.util
+        script = Path(__file__).resolve().parents[1] / 'scripts' / 'indexnow.py'
+        spec = importlib.util.spec_from_file_location('indexnow', script)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        example = [self.a, self.b]
+        current = module.snapshot(example)
+        self.assertEqual(len(current), 2)
+        self.assertEqual(module.changed_urls('https://example.org/site/',example,current,current), [])
+        urls = module.changed_urls('https://example.org/site/',example,{},current)
+        self.assertIn('https://example.org/site/videos/abcdefghijk/', urls)
+        self.assertIn('https://example.org/site/sujets/chauffage/', urls)
+        self.assertIn('https://example.org/site/', urls)
+
+    def test_optional_analytics_snippet_only_with_token(self):
+        from unittest import mock
+        with mock.patch.dict('os.environ', {'CF_WEB_ANALYTICS_TOKEN':'0123456789abcdef0123456789abcdef'}):
+            page = site.layout('Titre','Description','<p>Texte</p>','/site/')
+            self.assertIn('static.cloudflareinsights.com/beacon.min.js', page)
+        with mock.patch.dict('os.environ', {'CF_WEB_ANALYTICS_TOKEN':'not-a-token'}):
+            page = site.layout('Titre','Description','<p>Texte</p>','/site/')
+            self.assertNotIn('static.cloudflareinsights.com/beacon.min.js', page)
+
     def test_video_schema(self):
         page = site.detail_page(self.a, [self.a, self.b], '/repo/', 'https://example.org/repo/videos/abcdefghijk/')
         self.assertIn('VideoObject', page)
