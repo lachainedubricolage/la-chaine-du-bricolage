@@ -37,3 +37,18 @@
 .full-video-link a,.seo-topic-ref a,.documented-chapters a{color:#145c8f;font-weight:650;text-decoration:underline;text-underline-offset:3px}
 .catalog-head nav[aria-label="Fil d’Ariane"]{font-size:.85rem;margin-bottom:22px}
 .catalog-head nav[aria-label="Fil d’Ariane"] a{color:inherit;text-decoration:underline}
+
+/* V4 — guide de recherche et balises vidéo utiles, sans surcharge visuelle */
+.guide-feature{margin:18px 0 0;padding:12px 17px;border-radius:12px;background:#f2f8ff;border:1px solid #d7e9fa}
+.guide-feature a,.guide-link a{color:#145c8f;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.search-questions,.video-tags,.guide-video{margin:22px 0;padding:19px 22px;border-radius:14px;border:1px solid #dce8f2;background:#f8fbff}
+.search-questions h2,.guide-content h2{font-size:1.35rem;margin:0 0 15px;color:#173f67}
+.search-answer{margin:17px 0}
+.search-answer h3{font-size:1rem;margin:0 0 7px;color:#193e60}
+.search-answer p,.guide-video p{line-height:1.7;margin:0 0 10px}
+.video-tags h2{font-size:1rem;margin:0 0 12px}
+.video-tags p{display:flex;gap:8px;flex-wrap:wrap;margin:0}
+.topic-tag{font-size:.81rem;color:#245679;background:#e7f2fc;padding:7px 11px;border-radius:999px}
+.guide-video a{font-weight:700;color:#16618f;text-decoration:underline;text-underline-offset:3px}
+.guide-content{max-width:900px}
+.guide-content>p{line-height:1.7}
