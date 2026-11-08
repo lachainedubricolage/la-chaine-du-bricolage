@@ -53,7 +53,7 @@ jobs:
           import re
           from pathlib import Path
           token = os.environ.get('CF_WEB_ANALYTICS_TOKEN', '').strip()
-          pages = list(Path('site').rglob('*.html'))
+          pages = [p for p in Path('site').rglob('*.html') if p.name == 'index.html']
           injected = [p for p in pages if 'static.cloudflareinsights.com/beacon.min.js' in p.read_text(encoding='utf-8')]
           if not token:
               print('::notice title=Cloudflare Web Analytics::Variable CF_WEB_ANALYTICS_TOKEN absente ou vide ; suivi non activé.')
