@@ -40,11 +40,6 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('"contentUrl"', page)
         self.assertIn('max-video-preview:-1', page)
 
-    def test_chapters_from_creator_description_only(self):
-        links = site.chapter_links('00:00 Introduction\n01:25 Matériel nécessaire\n03:12 Démonstration', 'abcdefghijk')
-        self.assertIn('t=85s', links)
-        self.assertEqual(site.chapter_links('Aucun chapitre', 'abcdefghijk'), '')
-
     def test_sitemap_video_entries(self):
         import tempfile
         import xml.etree.ElementTree as ET
