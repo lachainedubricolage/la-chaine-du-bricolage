@@ -120,7 +120,7 @@ class SiteTests(unittest.TestCase):
         })
         page = site.detail_page(video, [video], '/repo/', 'https://example.org/repo/videos/-rfWTS3UIzE/')
         self.assertIn('Comment refaire la plomberie', page)
-        self.assertIn('Questions sur ce tutoriel', page)
+        self.assertIn('Vos questions sur ce tutoriel', page)
         self.assertIn('#Plomberie', page)
         self.assertIn('guides/plomberie-multicouche/', page)
         self.assertIn('keywords', page)
