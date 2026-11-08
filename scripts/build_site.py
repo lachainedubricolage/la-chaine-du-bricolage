@@ -250,6 +250,12 @@ def layout(title: str, description: str, content: str, base_path: str, full_url:
     css = path_url(base_path, 'assets/style.css')
     script = path_url(base_path, 'assets/app.js')
     search_url = path_url(base_path, 'catalogue/')
+    analytics_token = os.environ.get('CF_WEB_ANALYTICS_TOKEN', '').strip()
+    analytics_tag = (
+        '<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+        + "data-cf-beacon='{" + '"token":"' + analytics_token + '"}' + "'></script>"
+        if re.fullmatch(r'[0-9a-fA-F]{32}', analytics_token) else ''
+    )
     return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>{escape(title)}</title><meta name="description" content="{escape(description)}">
 {canonical}<meta property="og:type" content="website"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}">{ogurl}{ogimage}<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1"><link rel="alternate" type="application/atom+xml" title="Nouvelles vidéos" href="{escape(path_url(base_path, 'feed.xml'))}"><link rel="icon" href="{escape(path_url(base_path, 'assets/chaine-logo.jpg'))}" type="image/jpeg"><link rel="stylesheet" href="{escape(css)}">{schema_tag}{extra_head}</head>
@@ -265,7 +271,7 @@ def layout(title: str, description: str, content: str, base_path: str, full_url:
 <div><span class="footer-label">EXPLORER</span><a href="{escape(search_url)}">Vidéos & tutoriels</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a><a href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Chaîne YouTube</a><a href="{escape(path_url(base_path, 'feed.xml'))}">Flux des publications</a></div>
 <div><span class="footer-label">NOUS CONTACTER</span><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a><p>Les démonstrations ne remplacent pas les consignes de sécurité, les notices fabricants ni l’intervention d’un professionnel lorsque nécessaire.</p></div></div>
 <div class="container footer-bottom"><span>© {dt.datetime.now().year} La chaîne du bricolage</span><span>Site indépendant, vidéos diffusées via YouTube</span></div></footer>
-<script src="{escape(script)}" defer></script></body></html>'''
+<script src="{escape(script)}" defer></script>{analytics_tag}</body></html>'''
 
 def render_grid(videos: list[dict], base_path: str) -> str:
     if videos: return '<div class="video-grid" id="video-grid">' + ''.join(card(v, base_path) for v in videos) + '</div>'
@@ -341,7 +347,7 @@ def build(videos: list[dict], site_url: str) -> None:
     shutil.copytree(ROOT / 'assets', OUTPUT / 'assets', dirs_exist_ok=True)
     (OUTPUT / '.nojekyll').write_text('', encoding='utf-8')
     # Conserver les vérifications Google et Bing à chaque régénération automatique.
-    for filename in ('googlefd66cc36e99efde5.html', 'BingSiteAuth.xml'):
+    for filename in ('googlefd66cc36e99efde5.html', 'BingSiteAuth.xml', 'a0e21430e607e359e7b289360c1db2be.txt'):
         verification = ROOT / filename
         if verification.is_file():
             shutil.copy2(verification, OUTPUT / filename)
