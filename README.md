@@ -44,7 +44,7 @@ L'import lit la playlist publique des mises en ligne de la chaîne et récupère
 - Le lecteur YouTube est présent dans le HTML de chaque vidéo (iframe), sans clic initial.
 - Chaque page utilise une URL canonique, les métadonnées VideoObject avec les données YouTube, et des instructions d'indexation ouvertes.
 - Le sitemap.xml est enrichi avec la section video:video : titre, description, miniature, date, durée et URL du lecteur. Il est régénéré automatiquement.
-- Les chapitres ne sont affichés que lorsqu'ils sont effectivement présents dans les descriptions YouTube. Aucun conseil technique n'est inventé par le site.
+- Les descriptions proviennent de YouTube. Aucun conseil technique n'est inventé par le site.
 - La découverte par Google ou les agents IA dépend des moteurs et n'est pas une garantie de classement ou de recommandation.
 
 ### Pour valider l'indexation (action du propriétaire)
