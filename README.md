@@ -87,3 +87,14 @@ L'intégration gratuite est préparée mais inactive sans jeton Cloudflare. Pour
 - Ajouter l'URL du site dans les liens YouTube Studio ainsi que dans les descriptions de vidéos pertinentes et sur Facebook/Instagram.
 - Fournir des transcriptions ou sous-titres vérifiés si l'on souhaite des fiches tutoriels contenant les étapes complètes réellement filmées.
 - Les moteurs de recherche et assistants IA décident seuls des contenus qu'ils indexent ou recommandent.
+
+## V4 — recherche naturelle et tutoriels détaillés (novembre 2026)
+
+- Chaque fiche reprend les **hashtags réellement présents** dans sa description ou son titre YouTube (au maximum huit, sans bourrage artificiel).
+- Pour les tutoriels dont les descriptions ont été contrôlées, la fiche ajoute des **questions-réponses éditoriales vérifiées**. Aucune question n’est ajoutée automatiquement à partir de suppositions sur les images.
+- Le **guide « Plomberie multicouche maison »** dans `/guides/plomberie-multicouche/` regroupe la vidéo d'installation sanitaire complète, la présentation de la plomberie domestique et le tutoriel de sertissage, avec des liens vers les vidéos et leurs fiches. Il figure aussi dans les liens de l'accueil, du thème plomberie et du sitemap lorsque la vidéo principale est dans le catalogue.
+- Les fiches vidéo conservent le lecteur intégré, la description de l'auteur, les chapitres réellement publiés et les données structurées VideoObject ; les hashtags publiés figurent également dans le champ `keywords` des métadonnées structurées.
+- Le système de mise à jour toutes les six heures continue à fonctionner sans intervention : les nouvelles vidéos sont ajoutées, mais **des questions techniques spécifiques ne sont pas inventées** pour celles dont le contenu n'a pas été vérifié.
+- Les hashtags ne garantissent pas la visibilité. La bonne indexation dépend des moteurs et la pertinence des résultats dépend de leurs systèmes de classement ; aucun assistant IA n'est obligé de recommander ces vidéos.
+
+Pour enrichir de nouveaux tutoriels avec des questions précises, examiner la vidéo ou une transcription vérifiée, puis compléter `SEARCH_QUESTIONS` dans `scripts/seo_content.py`.
