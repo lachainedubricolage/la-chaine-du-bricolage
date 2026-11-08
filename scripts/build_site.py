@@ -316,6 +316,10 @@ def build(videos: list[dict], site_url: str) -> None:
     OUTPUT.mkdir(parents=True)
     shutil.copytree(ROOT / 'assets', OUTPUT / 'assets', dirs_exist_ok=True)
     (OUTPUT / '.nojekyll').write_text('', encoding='utf-8')
+    # Le fichier Search Console doit survivre à chaque régénération du site.
+    verification = ROOT / 'googlefd66cc36e99efde5.html'
+    if verification.is_file():
+        shutil.copy2(verification, OUTPUT / verification.name)
     base_path = '/' + urllib.parse.urlparse(site_url).path.strip('/') + '/' if site_url and urllib.parse.urlparse(site_url).path.strip('/') else '/'
     def absolute(rel=''):
         return site_url.rstrip('/') + '/' + rel if site_url else ''
