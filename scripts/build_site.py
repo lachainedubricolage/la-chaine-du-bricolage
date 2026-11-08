@@ -292,6 +292,180 @@ def catalogue_page(videos: list[dict], base_path: str, site_url: str) -> str:
     return layout('Toutes les vidéos | La chaîne du bricolage', 'Retrouvez et recherchez tous les tutoriels, les astuces bricolage et les tests d’outillage publiés sur La chaîne du bricolage.', content, base_path, site_url)
 
 
+def chapter_links(description: str, video_id: str) -> str:
+    """Affiche les horodatages seulement s'ils existent dans la description YouTube."""
+    entries = []
+    for line in description.splitlines():
+        m = re.match(r'^\s*(?:(\d{1,2}):)?(\d{1,2}):(\d{2})\s*(?:[-–—|.)]\s*)?(.{3,140}?)\s*
+    description = v['description'].strip() or 'Découvrez la démonstration complète en vidéo sur La chaîne du bricolage.'
+    related = [x for x in videos if x['id'] != v['id'] and x['category'] == v['category']][:3]
+    if len(related) < 3:
+        related += [x for x in videos if x['id'] != v['id'] and x not in related][:3 - len(related)]
+    iso = v['published']
+    schema = {'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': shorten(description, 4000), 'thumbnailUrl': [v['thumbnail']], 'embedUrl': f'https://www.youtube-nocookie.com/embed/{v["id"]}', 'sameAs': v['url'], 'inLanguage': 'fr-FR', 'publisher': {'@type': 'Organization', 'name': CHANNEL_NAME, 'sameAs': CHANNEL_URL}}
+    if iso: schema['uploadDate'] = iso
+    if v.get('duration_seconds') is not None: schema['duration'] = f'PT{v["duration_seconds"]}S'
+    if site_url:
+        schema['mainEntityOfPage'] = site_url
+        schema['url'] = site_url
+    else:
+        schema['url'] = v['url']
+    desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
+    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(v['title'])}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(v['title'])}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que vous allez découvrir</h2>{desc_html}{chapters_html}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
+    return layout(f'{v["title"]} | La chaîne du bricolage', shorten(description, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
+
+
+def build(videos: list[dict], site_url: str) -> None:
+    if OUTPUT.exists(): shutil.rmtree(OUTPUT)
+    OUTPUT.mkdir(parents=True)
+    shutil.copytree(ROOT / 'assets', OUTPUT / 'assets', dirs_exist_ok=True)
+    (OUTPUT / '.nojekyll').write_text('', encoding='utf-8')
+    base_path = '/' + urllib.parse.urlparse(site_url).path.strip('/') + '/' if site_url and urllib.parse.urlparse(site_url).path.strip('/') else '/'
+    def absolute(rel=''):
+        return site_url.rstrip('/') + '/' + rel if site_url else ''
+    (OUTPUT / 'index.html').write_text(homepage(videos, base_path, absolute()), encoding='utf-8')
+    (OUTPUT / 'catalogue').mkdir()
+    (OUTPUT / 'catalogue' / 'index.html').write_text(catalogue_page(videos, base_path, absolute('catalogue/')), encoding='utf-8')
+    data_dir = OUTPUT / 'data'
+    data_dir.mkdir()
+    (data_dir / 'videos.json').write_text(json.dumps(videos, indent=2, ensure_ascii=False), encoding='utf-8')
+    urls = [(absolute(), None), (absolute('catalogue/'), None)] if site_url else []
+    for v in videos:
+        directory = OUTPUT / 'videos' / v['id']
+        directory.mkdir(parents=True)
+        uri = 'videos/' + v['id'] + '/'
+        (directory / 'index.html').write_text(detail_page(v, videos, base_path, absolute(uri)), encoding='utf-8')
+        if site_url: urls.append((absolute(uri), v.get('published', '')[:10]))
+    if site_url:
+        pages = [
+            f'<url><loc>{escape(absolute())}</loc></url>',
+            f'<url><loc>{escape(absolute("catalogue/"))}</loc></url>',
+        ]
+        for v in videos:
+            url = absolute('videos/' + v['id'] + '/')
+            date = v.get('published') or ''
+            lastmod = f'<lastmod>{escape(date[:10])}</lastmod>' if re.match(r'^\d{4}-\d{2}-\d{2}', date) else ''
+            pub = f'<video:publication_date>{escape(date)}</video:publication_date>' if date else ''
+            secs = v.get('duration_seconds')
+            duration = f'<video:duration>{secs}</video:duration>' if secs is not None and 1 <= secs <= 28800 else ''
+            video = (
+                '<video:video>'
+                f'<video:thumbnail_loc>{escape(v["thumbnail"])}</video:thumbnail_loc>'
+                f'<video:title>{escape(shorten(v["title"], 100))}</video:title>'
+                f'<video:description>{escape(shorten(v["description"] or v["title"], 1900))}</video:description>'
+                f'<video:player_loc allow_embed="yes">{escape("https://www.youtube-nocookie.com/embed/" + v["id"])}</video:player_loc>'
+                f'{pub}{duration}'
+                '</video:video>'
+            )
+            pages.append(f'<url><loc>{escape(url)}</loc>{lastmod}{video}</url>')
+        sitemap = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+            'xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
+            + '\n'.join(pages)
+            + '\n</urlset>\n'
+        )
+        (OUTPUT / 'sitemap.xml').write_text(sitemap, encoding='utf-8')
+    (OUTPUT / 'robots.txt').write_text('User-agent: *\nAllow: /\n' + (f'Sitemap: {absolute("sitemap.xml")}\n' if site_url else ''), encoding='utf-8')
+    entries = ''.join('<entry><title>' + escape(v['title']) + '</title><id>' + escape(v['url']) + '</id><link href="' + escape(v['url']) + '"/><updated>' + escape(v['published'] or '2026-01-01T00:00:00Z') + '</updated><summary>' + escape(shorten(v['description'], 600)) + '</summary></entry>' for v in videos[:50])
+    feed = '<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>La chaîne du bricolage — nouvelles vidéos</title><id>' + escape(CHANNEL_URL) + '</id><updated>' + dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z') + '</updated>' + entries + '</feed>'
+    (OUTPUT / 'feed.xml').write_text(feed, encoding='utf-8')
+    print(f'Site généré : {len(videos)} vidéos, base : {base_path}, destination : {OUTPUT}')
+
+
+def inferred_url() -> str:
+    env_url = os.environ.get('SITE_URL', '').strip()
+    if env_url:
+        parsed = urllib.parse.urlparse(env_url)
+        if parsed.scheme not in {'http', 'https'} or not parsed.netloc:
+            raise ValueError('SITE_URL doit être une URL http(s) complète.')
+        return env_url.rstrip('/') + '/'
+    repo = os.environ.get('GITHUB_REPOSITORY', '').strip()
+    if '/' in repo:
+        owner, name = repo.split('/', 1)
+        base = f'https://{owner}.github.io/'
+        return base if name.lower() == f'{owner.lower()}.github.io' else base + urllib.parse.quote(name) + '/'
+    return ''
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--offline', action='store_true', help='Ne pas accéder à YouTube : créer la prévisualisation à partir du catalogue local.')
+    parser.add_argument('--site-url', default=None, help='URL publique complète du site (GitHub Pages, domaine propre...)')
+    args = parser.parse_args()
+    global CHANNEL_ID, FEED_URL
+    resolved = resolve_channel_id() if not args.offline else CHANNEL_ID
+    if resolved != CHANNEL_ID:
+        print(f'Identifiant YouTube corrigé depuis le profil officiel : {CHANNEL_ID} -> {resolved}')
+        CHANNEL_ID = resolved
+        FEED_URL = f'https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}'
+    current = []
+    if ARCHIVE.exists():
+        try: current = json.loads(ARCHIVE.read_text(encoding='utf-8'))
+        except (ValueError, OSError) as exc: raise RuntimeError('Catalogue local invalide : ' + str(exc))
+    incoming = []
+    api_count = None
+    if not args.offline:
+        key = os.environ.get('YOUTUBE_API_KEY', '').strip()
+        if key:
+            try:
+                incoming = fetch_complete_catalog(key)
+                api_count = len(incoming)
+                print(f'Import officiel complet YouTube : {api_count} vidéos')
+            except Exception as exc:
+                print(f'::warning title=Import historique YouTube incomplet::La clé API est présente, mais l’import officiel a échoué : {exc}', file=sys.stderr)
+                print(f'API YouTube indisponible, repli sur le flux : {exc}', file=sys.stderr)
+        else:
+            print('::notice title=Importer les anciennes vidéos::Configurer le secret YOUTUBE_API_KEY pour récupérer tout l’historique.')
+        try:
+            incoming = merge(incoming, fetch_rss())
+            print(f'Flux YouTube actualisé : {len(incoming)} entrées')
+        except Exception as exc:
+            if not incoming and not current: raise
+            print(f'Flux indisponible : conservation du catalogue existant ({exc})', file=sys.stderr)
+    result = merge(current, incoming)
+    ARCHIVE.parent.mkdir(parents=True, exist_ok=True)
+    serialized = json.dumps(result, ensure_ascii=False, indent=2) + '\n'
+    if not ARCHIVE.exists() or ARCHIVE.read_text(encoding='utf-8') != serialized:
+        ARCHIVE.write_text(serialized, encoding='utf-8')
+    build(result, (args.site_url if args.site_url is not None else inferred_url()).strip())
+    print(f'Catalogue du site : {len(result)} vidéos et Shorts enregistrés')
+    summary_path = os.environ.get('GITHUB_STEP_SUMMARY', '')
+    if summary_path:
+        if api_count is not None:
+            import_status = f'✅ Import de la chaîne publique par API réussi : {api_count} vidéos renvoyées'
+        elif os.environ.get('YOUTUBE_API_KEY', '').strip():
+            import_status = '⚠️ La clé API est configurée, mais l’import historique a échoué. Le flux RSS et le catalogue précédent sont conservés.'
+        else:
+            import_status = '⏳ Import historique non activé : renseigner le secret YOUTUBE_API_KEY. Seules les publications récentes sont récupérées.'
+        with open(summary_path, 'a', encoding='utf-8') as summary:
+            summary.write('### La chaîne du bricolage — mise à jour du catalogue\n')
+            summary.write(f'- Vidéos et Shorts enregistrés : **{len(result)}**\n')
+            summary.write(f'- {import_status}\n')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
+, line)
+        if not m:
+            continue
+        hours, minutes, seconds, label = m.groups()
+        if int(minutes) > 59 or int(seconds) > 59:
+            continue
+        position = int(hours or 0)*3600 + int(minutes)*60 + int(seconds)
+        if any(pos == position for pos, _, _ in entries):
+            continue
+        stamp = ':'.join(v for v in (hours, minutes, seconds) if v is not None)
+        entries.append((position, label.strip(), stamp))
+        if len(entries) >= 30:
+            break
+    if len(entries) < 2:
+        return ''
+    links = ''.join(f'<li><a href="https://www.youtube.com/watch?v={video_id}&amp;t={position}s" target="_blank" rel="noopener noreferrer"><time>{escape(stamp)}</time> {escape(label)}</a></li>' for position,label,stamp in entries)
+    return f'<section class="video-chapters"><h2>Chapitres de la vidéo</h2><ol>{links}</ol><p>Horodatages fournis par La chaîne du bricolage sur YouTube.</p></section>'
+
+
 def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> str:
     description = v['description'].strip() or 'Découvrez la démonstration complète en vidéo sur La chaîne du bricolage.'
     related = [x for x in videos if x['id'] != v['id'] and x['category'] == v['category']][:3]
@@ -307,6 +481,7 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
     else:
         schema['url'] = v['url']
     desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
+    chapters_html = chapter_links(description, v['id'])
     content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(v['title'])}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(v['title'])}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que vous allez découvrir</h2>{desc_html}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
     return layout(f'{v["title"]} | La chaîne du bricolage', shorten(description, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
 
