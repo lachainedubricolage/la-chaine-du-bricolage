@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from seo_content import TOPICS, topic_slug, seo_title, seo_summary, documented_points, chapters, video_reference, related_videos
+from seo_content import TOPICS, topic_slug, seo_title, seo_summary, documented_points, chapters, video_reference, related_videos, video_hashtags, search_questions
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / 'site'
@@ -291,7 +291,7 @@ def homepage(videos: list[dict], base_path: str, site_url: str) -> str:
     welcome = f'''<section class="home-main"><div class="container"><div class="welcome-strip"><div class="welcome-copy"><span class="label-row">BIENVENUE SUR LA CHAÎNE</span><h2>Le bricolage,<br><em>à la portée de tous.</em></h2><p>Plomberie, chauffage, rénovation et outillage : des démonstrations claires, des astuces utiles et des tests concrets pour avancer dans vos projets.</p><div class="welcome-actions"><a class="btn btn-primary" href="{escape(path_url(base_path, 'catalogue/'))}">Découvrir les tutoriels →</a><a class="btn btn-outline" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Voir sur YouTube ▶</a></div></div>{featured}</div></div></section>'''
     themes=[('Chauffage','♨','Chauffage'),('Plomberie','⌁','Plomberie'),('Tests & outillage','⚒','Tests & outillage'),('Rénovation','▱','Rénovation'),('Électricité','ϟ','Électricité')]
     theme_cards=''.join(f'<a class="theme-card" href="{escape(path_url(base_path, "sujets/" + topic_slug(c) + "/"))}"><span class="theme-glyph" aria-hidden="true">{icon}</span><strong>{escape(label)}</strong></a>' for label, icon,c in themes)
-    sections=f'''<section class="section-top"><div class="container"><div class="section-heading"><div><span class="overline">RETROUVEZ VOS SUJETS</span><h2>Qu’est-ce qu’on bricole aujourd’hui ?</h2></div><p>Un sujet, un bon geste, le bon tuto. Explorez la chaîne selon vos besoins.</p></div><div class="theme-grid">{theme_cards}</div></div></section>
+    sections=f'''<section class="section-top"><div class="container"><div class="section-heading"><div><span class="overline">RETROUVEZ VOS SUJETS</span><h2>Qu’est-ce qu’on bricole aujourd’hui ?</h2></div><p>Un sujet, un bon geste, le bon tuto. Explorez la chaîne selon vos besoins.</p></div><div class="theme-grid">{theme_cards}</div>{'<p class="guide-feature"><a href="' + escape(path_url(base_path, 'guides/plomberie-multicouche/')) + '">Commencer la plomberie de sa maison : guide vidéo multicouche ↗</a></p>' if any(v['id'] == '-rfWTS3UIzE' for v in videos) else ''}</div></section>
 <section class="listing-section"><div class="container"><div class="section-heading"><div><span class="overline">LES NOUVEAUTÉS DE LA CHAÎNE</span><h2>Dernières vidéos & Shorts</h2></div><a class="text-link" href="{escape(path_url(base_path, 'catalogue/'))}">Voir toutes les vidéos →</a></div>{render_grid(videos[:9],base_path)}<div class="center-action"><a class="btn btn-dark" href="{escape(path_url(base_path, 'catalogue/'))}">Explorer toutes les vidéos →</a></div></div></section>
 <section class="mission"><div class="container mission-inner"><div class="mission-graphic" aria-hidden="true"><span>APPRENDRE.</span><span>BRICOLER.</span><span>RÉUSSIR.</span></div><div class="mission-copy"><span class="overline">LA PHILOSOPHIE DE LA CHAÎNE</span><h2>Du concret, pour <em>bricoler soi-même.</em></h2><p>Débutant ou passionné, retrouvez des tutos, des essais d’outillage à main et électroportatif, et des explications utiles sans discours promotionnel inutile.</p><a class="btn btn-primary" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Rejoindre la chaîne YouTube →</a></div></div></section>
 <section class="newsletter-like"><div class="container closing"><span class="overline">À RETROUVER ICI</span><h2>Une nouvelle vidéo publiée ? <em>Elle arrive ici.</em></h2><p>Le site récupère automatiquement les nouvelles publications YouTube après la mise en ligne et l’activation de la synchronisation.</p><a class="btn btn-dark" href="{escape(path_url(base_path, 'catalogue/'))}">Voir la vidéothèque →</a></div></section>'''
@@ -306,8 +306,11 @@ def catalogue_page(videos: list[dict], base_path: str, site_url: str) -> str:
 def topic_page(category: str, videos: list[dict], base_path: str, site_url: str) -> str:
     slug, subtitle = TOPICS[category]
     selection = [v for v in videos if v.get('category') == category]
+    guide_feature = ('<p class="guide-feature"><a href="' + escape(path_url(base_path, 'guides/plomberie-multicouche/')) +
+                     '">Guide : refaire sa plomberie de maison en multicouche, nourrices et sertissage ↗</a></p>'
+                     if category == 'Plomberie' and any(v['id'] == '-rfWTS3UIzE' for v in videos) else '')
     breadcrumb = f'<nav aria-label="Fil d’Ariane"><a href="{escape(base_path)}">Accueil</a> / <a href="{escape(path_url(base_path, "catalogue/"))}">Vidéos</a> / {escape(category)}</nav>'
-    content = f'<section class="catalog-head"><div class="container">{breadcrumb}<span class="overline">NOS VIDÉOS PAR SUJET</span><h1>{escape(category)}</h1><p>{escape(subtitle)}</p><p>{len(selection)} vidéos et Shorts classés dans cette rubrique.</p></div></section><section class="catalog-section"><div class="container">{render_grid(selection, base_path)}<p><a href="{escape(path_url(base_path, "catalogue/"))}">Voir toutes les vidéos et les autres thèmes ↗</a></p></div></section>'
+    content = f'<section class="catalog-head"><div class="container">{breadcrumb}<span class="overline">NOS VIDÉOS PAR SUJET</span><h1>{escape(category)}</h1><p>{escape(subtitle)}</p>{guide_feature}<p>{len(selection)} vidéos et Shorts classés dans cette rubrique.</p></div></section><section class="catalog-section"><div class="container">{render_grid(selection, base_path)}<p><a href="{escape(path_url(base_path, "catalogue/"))}">Voir toutes les vidéos et les autres thèmes ↗</a></p></div></section>'
     schema = json.dumps({'@context':'https://schema.org', '@type':'CollectionPage', 'name':category + ' – La chaîne du bricolage', 'url':site_url, 'description':subtitle, 'inLanguage':'fr-FR'},ensure_ascii=False)
     return layout(category + ' : tutoriels et vidéos | La chaîne du bricolage',subtitle,content,base_path,site_url,schema=schema)
 
@@ -317,6 +320,8 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
     display_title = seo_title(v)
     summary = seo_summary(v)
     topics = documented_points(description)
+    questions = search_questions(v)
+    hashtags = video_hashtags(v)
     timeline = chapters(description, v['id'])
     full_video = video_reference(description, v['id'], videos)
     topic_href = path_url(base_path, 'sujets/' + topic_slug(v['category']) + '/')
@@ -327,6 +332,7 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
     related = related_videos(v, videos, limit=4)
     iso = v['published']
     schema = {'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': shorten(description, 4000), 'thumbnailUrl': [v['thumbnail']], 'embedUrl': f'https://www.youtube-nocookie.com/embed/{v["id"]}', 'sameAs': v['url'], 'inLanguage': 'fr-FR', 'publisher': {'@type': 'Organization', 'name': CHANNEL_NAME, 'sameAs': CHANNEL_URL}}
+    if hashtags: schema['keywords'] = [tag.removeprefix('#') for tag in hashtags]
     if iso: schema['uploadDate'] = iso
     if v.get('duration_seconds') is not None: schema['duration'] = f'PT{v["duration_seconds"]}S'
     if timeline:
@@ -336,9 +342,78 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
         schema['url'] = site_url
     else:
         schema['url'] = v['url']
+    question_html = ('<section class="search-questions"><h2>Vos questions sur ce tutoriel</h2>' +
+        ''.join('<div class="search-answer"><h3>' + escape(question) + '</h3><p>' + escape(answer) + '</p></div>'
+                for question, answer in questions) + '</section>') if questions else ''
+    tag_html = ('<section class="video-tags" aria-label="Sujets mentionnés dans la vidéo"><h2>Sujets et hashtags de la vidéo</h2><p>' +
+        ' '.join('<span class="topic-tag">' + escape(tag) + '</span>' for tag in hashtags) +
+        '</p></section>') if hashtags else ''
+    guide_html = (f'<p class="guide-link"><a href="{escape(path_url(base_path, "guides/plomberie-multicouche/"))}">Guide vidéo : apprendre à organiser sa plomberie en multicouche ↗</a></p>'
+                  if v['id'] in {'-rfWTS3UIzE', 'X62wo2YUgIA', 'nGJORtAWj3Y'} and any(x['id'] == '-rfWTS3UIzE' for x in videos) else '')
     desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
-    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(display_title)}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(display_title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que la chaîne présente</h2><p class="seo-summary">{escape(summary)}</p>{points_html}{timeline_html}{full_html}{desc_html}{topic_link}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
+    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(display_title)}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(display_title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que la chaîne présente</h2><p class="seo-summary">{escape(summary)}</p>{points_html}{timeline_html}{full_html}{question_html}{tag_html}{guide_html}{desc_html}{topic_link}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
     return layout(f'{display_title} | La chaîne du bricolage', shorten(summary, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
+
+
+def multicouche_guide_page(videos: list[dict], base_path: str, site_url: str) -> str:
+    """Guide thématique fondé sur des publications YouTube existantes."""
+    titles = {
+        '-rfWTS3UIzE': ('1. Préparer et organiser une installation complète',
+                       "Conception du réseau, arrivée d’eau, vanne d’arrêt, réducteur de pression, nourrices et distribution des points d’eau : les sujets annoncés par l’auteur."),
+        'nGJORtAWj3Y': ('2. Comprendre les éléments d’une plomberie domestique',
+                        "Tuyaux, raccords, gaines, fixations, diamètres et évacuations : une présentation générale des équipements."),
+        'X62wo2YUgIA': ('3. Découvrir le sertissage multicouche et cuivre',
+                        "Démonstrations de sertissage et présentation des sertisseuses, avec des chapitres repérés dans la description de la vidéo."),
+    }
+    by_id = {v['id']: v for v in videos}
+    sections = []
+    items = []
+    for identifier, (heading, explanation) in titles.items():
+        video = by_id.get(identifier)
+        if not video:
+            continue
+        link = path_url(base_path, 'videos/' + identifier + '/')
+        absolute_link = site_url.rstrip('/').rsplit('/guides/plomberie-multicouche', 1)[0] + '/videos/' + identifier + '/' if site_url else video['url']
+        sections.append(f'<article class="guide-video"><h2>{escape(heading)}</h2><p>{escape(explanation)}</p>'
+                        f'<a href="{escape(link)}">{escape(seo_title(video))} : voir le tutoriel et sa description ↗</a>'
+                        f'<p><a href="{escape(video["url"])}" target="_blank" rel="noopener noreferrer">Regarder sur YouTube ↗</a></p></article>')
+        items.append({'@type': 'ListItem', 'position': len(items) + 1,
+                      'url': absolute_link, 'name': seo_title(video)})
+    guide_link = path_url(base_path, 'videos/-rfWTS3UIzE/')
+    content = f'''<section class="catalog-head"><div class="container">
+    <nav aria-label="Fil d’Ariane"><a href="{escape(base_path)}">Accueil</a> /
+    <a href="{escape(path_url(base_path, "sujets/plomberie/"))}">Plomberie</a> / Multicouche</nav>
+    <span class="overline">GUIDE VIDÉO · PLOMBERIE</span>
+    <h1>Comment refaire la plomberie de sa maison en multicouche ?</h1>
+    <p>Vous souhaitez préparer un réseau d’eau chaude et d’eau froide, installer des nourrices ou comprendre le sertissage du multicouche ?
+    Retrouvez les vidéos complémentaires de La chaîne du bricolage sur ces sujets.</p>
+    </div></section><section class="detail-body"><div class="container guide-content">
+    <h2>Par où commencer son installation de plomberie ?</h2>
+    <p>Pour découvrir l’organisation d’un réseau sanitaire domestique, commencez par
+    <a href="{escape(guide_link)}">le tutoriel consacré à l’installation complète en multicouche</a>.
+    Vous pourrez ensuite compléter avec les vidéos présentant les équipements et les raccords à sertir.</p>
+    {''.join(sections)}
+    <section class="search-questions"><h2>Questions fréquentes sur la plomberie multicouche</h2>
+    <div class="search-answer"><h3>Comment refaire soi-même la plomberie de sa maison ?</h3>
+    <p>La vidéo sur l’installation complète présente la conception du réseau et les composants à prévoir.
+    Elle sert de point de départ pour préparer son projet, mais ne remplace pas les notices techniques ni les vérifications adaptées au logement.</p></div>
+    <div class="search-answer"><h3>Comment répartir l’eau chaude et l’eau froide avec des nourrices ?</h3>
+    <p>Le tutoriel d’installation multicouche aborde l’alimentation des nourrices et la distribution vers les différents points de puisage.
+    Le dimensionnement final dépend de l’installation réelle et des prescriptions applicables.</p></div>
+    <div class="search-answer"><h3>Où trouver une démonstration de sertissage multicouche ?</h3>
+    <p>La vidéo dédiée au sertissage du multicouche et du cuivre contient une partie consacrée au multicouche.
+    Vérifiez toujours la compatibilité des raccords, mâchoires et outils ainsi que les instructions des fabricants.</p></div>
+    </section><p><a href="{escape(path_url(base_path, "sujets/plomberie/"))}">Explorer tous les tutoriels de plomberie ↗</a></p>
+    </div></section>'''
+    schema = json.dumps({'@context': 'https://schema.org', '@type': 'CollectionPage',
+                         'name': 'Comment refaire la plomberie de sa maison en multicouche ?',
+                         'description': 'Sélection de tutoriels de La chaîne du bricolage sur le réseau sanitaire en multicouche, les nourrices et le sertissage.',
+                         'url': site_url, 'inLanguage': 'fr-FR',
+                         'mainEntity': {'@type': 'ItemList', 'itemListElement': items}},
+                        ensure_ascii=False)
+    return layout('Plomberie multicouche maison : installation, nourrices et sertissage | La chaîne du bricolage',
+                  'Comment préparer sa plomberie en multicouche ? Tutoriels vidéo sur le réseau eau chaude et froide, les nourrices, les raccords et le sertissage.',
+                  content, base_path, site_url, schema=schema)
 
 
 def build(videos: list[dict], site_url: str) -> None:
@@ -357,6 +432,12 @@ def build(videos: list[dict], site_url: str) -> None:
     (OUTPUT / 'index.html').write_text(homepage(videos, base_path, absolute()), encoding='utf-8')
     (OUTPUT / 'catalogue').mkdir()
     (OUTPUT / 'catalogue' / 'index.html').write_text(catalogue_page(videos, base_path, absolute('catalogue/')), encoding='utf-8')
+    has_multicouche_guide = any(v['id'] == '-rfWTS3UIzE' for v in videos)
+    if has_multicouche_guide:
+        guide_folder = OUTPUT / 'guides' / 'plomberie-multicouche'
+        guide_folder.mkdir(parents=True)
+        (guide_folder / 'index.html').write_text(
+            multicouche_guide_page(videos, base_path, absolute('guides/plomberie-multicouche/')), encoding='utf-8')
     topics_folder = OUTPUT / 'sujets'
     topics_folder.mkdir()
     for topic, (slug, _) in TOPICS.items():
@@ -379,6 +460,7 @@ def build(videos: list[dict], site_url: str) -> None:
             f'<url><loc>{escape(absolute())}</loc></url>',
             f'<url><loc>{escape(absolute("catalogue/"))}</loc></url>',
             *(f'<url><loc>{escape(absolute("sujets/" + slug + "/"))}</loc></url>' for slug, _ in TOPICS.values()),
+            *([f'<url><loc>{escape(absolute("guides/plomberie-multicouche/"))}</loc></url>'] if has_multicouche_guide else []),
         ]
         for v in videos:
             url = absolute('videos/' + v['id'] + '/')
