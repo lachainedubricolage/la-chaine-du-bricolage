@@ -27,3 +27,13 @@ Le programme **.github/workflows/site-auto.yml** synchronise la chaîne YouTube 
 La maquette `apercu-local.html` est conservée à titre de référence. Elle n'est pas le site publié et contient des cartes d'exemple.
 
 Le programme utilise seulement des métadonnées YouTube publiques. Les vidéos sont hébergées sur YouTube.
+## Import de toutes les anciennes vidéos et Shorts (une fois)
+
+1. Ouvrir [Google Cloud Console](https://console.cloud.google.com/projectcreate), créer un projet (« Site chaîne du bricolage ») et le sélectionner.
+2. Ouvrir la [bibliothèque YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com) et cliquer sur **Activer**.
+3. Ouvrir [Identifiants](https://console.cloud.google.com/apis/credentials) et choisir **Créer des identifiants → Clé API**. Copier la clé sans la publier.
+4. Dans Google Cloud, limiter de préférence la clé dans **Restrictions relatives aux API** à **YouTube Data API v3**. Comme le programme s'exécute sur GitHub Actions et non dans un navigateur fixe, éviter une restriction par référent HTTP qui empêcherait le script de fonctionner.
+5. Sur GitHub : [Settings → Secrets and variables → Actions](https://github.com/lachainedubricolage/la-chaine-du-bricolage/settings/secrets/actions) → **New repository secret**. Nom exact : `YOUTUBE_API_KEY` ; valeur : la clé Google. Enregistrer. Ne jamais la coller dans un fichier du dépôt ni dans un message.
+6. Dans [Actions](https://github.com/lachainedubricolage/la-chaine-du-bricolage/actions/workflows/site-auto.yml), sélectionner « Site — mise à jour YouTube et publication » et cliquer sur **Run workflow**. Le rapport d'exécution affiche le nombre de vidéos récupérées. Si aucun rapport d'import complet n'apparaît, vérifier les étapes et la clé.
+
+L'import lit la playlist publique des mises en ligne de la chaîne et récupère les métadonnées des vidéos par lots. Les vidéos privées ne sont pas affichées. Le classement des Shorts par durée est indicatif : une vidéo courte n'est pas automatiquement un Short au sens de YouTube. Le script conserve les vidéos précédemment enregistrées si l'API est momentanément indisponible.
