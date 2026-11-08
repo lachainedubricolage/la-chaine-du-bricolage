@@ -59,7 +59,7 @@ def category(title: str, description: str = '') -> str:
     text = (title + ' ' + description[:180]).lower()
     # Donner la priorité aux tutoriels techniques, puis aux essais d'outillage.
     categories = [
-        ('Chauffage', ('radiateur', 'purge', 'chauffage', 'pompe à chaleur', 'thermostat', 'circulateur', 'chaudière')),
+        ('Chauffage', ('radiateur', 'purge', 'chauffage', 'chauffe-eau', 'chauffe eau', 'pompe à chaleur', 'thermostat', 'circulateur', 'chaudière')),
         ('Plomberie', ('plomberie', 'multicouche', 'sertir', 'raccord', 'robinet', 'évacuation', 'pvc', 'nourrice', 'tuyau', 'siphon')),
         ('Électricité', ('électricit', 'tableau électrique', 'prise électrique', 'disjoncteur', 'interrupteur', 'luminaire')),
         ('Rénovation', ('rénovation', 'peinture', 'enduit', 'carrelage', 'isolation', 'placo', 'porte de garage', 'menuiserie', 'maçonnerie')),
