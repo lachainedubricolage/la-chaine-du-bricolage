@@ -34,6 +34,31 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(site.path_url('/repo/', 'catalogue/'), '/repo/catalogue/')
         self.assertEqual(site.iso_duration_seconds('PT1H4M9S'), 3849)
 
+    def test_visible_video_reader_and_schema(self):
+        page = site.detail_page(self.a, [self.a], '/repo/', 'https://example.org/repo/videos/abcdefghijk/')
+        self.assertIn('<iframe src="https://www.youtube-nocookie.com/embed/abcdefghijk?rel=0"', page)
+        self.assertNotIn('"contentUrl"', page)
+        self.assertIn('max-video-preview:-1', page)
+
+    def test_chapters_from_creator_description_only(self):
+        links = site.chapter_links('00:00 Introduction\n01:25 Matériel nécessaire\n03:12 Démonstration', 'abcdefghijk')
+        self.assertIn('t=85s', links)
+        self.assertEqual(site.chapter_links('Aucun chapitre', 'abcdefghijk'), '')
+
+    def test_sitemap_video_entries(self):
+        import tempfile
+        import xml.etree.ElementTree as ET
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(site, 'OUTPUT', Path(tmp) / 'public'):
+                site.build([self.a], 'https://example.org/repo/')
+                page = (site.OUTPUT / 'videos' / self.a['id'] / 'index.html').read_text(encoding='utf-8')
+                self.assertIn('<iframe ', page)
+                root = ET.fromstring((site.OUTPUT / 'sitemap.xml').read_text(encoding='utf-8'))
+                ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9', 'v':'http://www.google.com/schemas/sitemap-video/1.1'}
+                self.assertEqual(len(root.findall('s:url', ns)), 3)
+                self.assertEqual(len(root.findall('.//v:video', ns)), 1)
+
     def test_video_schema(self):
         page = site.detail_page(self.a, [self.a, self.b], '/repo/', 'https://example.org/repo/videos/abcdefghijk/')
         self.assertIn('VideoObject', page)
