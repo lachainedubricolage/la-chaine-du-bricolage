@@ -111,7 +111,8 @@ def related_videos(video: dict, catalog: list[dict], limit: int=4) -> list[dict]
             score+=3
         if score:
             ranked.append((-score, candidate.get('published',''),candidate))
-    ranked.sort(key=lambda v:(v[0],v[1]))
+    ranked.sort(key=lambda v:v[1],reverse=True)
+    ranked.sort(key=lambda v:v[0])
     return [row[2] for row in ranked[:limit]]
 
 def html_list(items: list[str], class_name: str) -> str:
