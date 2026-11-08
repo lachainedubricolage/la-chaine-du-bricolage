@@ -43,7 +43,7 @@
   const card = v => {
     const url = `${base}videos/${encodeURIComponent(v.id)}/`;
     const duration = v.duration_seconds == null ? '' : `<span class="duration">${Math.floor(v.duration_seconds/60)}:${String(v.duration_seconds%60).padStart(2,'0')}</span>`;
-    return `<article class="video-card"><a href="${esc(url)}" class="thumb-link" aria-label="Voir ${esc(v.title)}"><img loading="lazy" width="480" height="270" src="${esc(v.thumbnail)}" alt="Miniature : ${esc(v.title)}"><span class="thumb-play" aria-hidden="true">▶</span>${duration}</a><div class="card-content"><h3><a href="${esc(url)}">${esc(v.title)}</a></h3><span class="eyebrow">La chaîne du bricolage · ${esc(v.category)}${v.short ? ' · Short' : ''}</span><p>${esc(preview(v.description) || 'Retrouvez cette vidéo sur notre chaîne YouTube.')}</p><div class="card-footer"><span>${esc(niceDate(v.published))}</span><a href="${esc(url)}">Voir la vidéo ↗</a></div></div></article>`;
+    return `<article class="video-card"><a href="${esc(url)}" class="thumb-link" aria-label="Voir ${esc(v.seo_title || v.title)}"><img loading="lazy" width="480" height="270" src="${esc(v.thumbnail)}" alt="Miniature : ${esc(v.title)}"><span class="thumb-play" aria-hidden="true">▶</span>${duration}</a><div class="card-content"><h3><a href="${esc(url)}">${esc(v.title)}</a></h3><span class="eyebrow">La chaîne du bricolage · ${esc(v.category)}${v.short ? ' · Short' : ''}</span><p>${esc(preview(v.seo_summary || v.description) || 'Retrouvez cette vidéo sur notre chaîne YouTube.')}</p><div class="card-footer"><span>${esc(niceDate(v.published))}</span><a href="${esc(url)}">Voir la vidéo ↗</a></div></div></article>`;
   };
   const update = () => {
     const q = simple(search.value.trim());
