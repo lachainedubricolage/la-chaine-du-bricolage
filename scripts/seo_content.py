@@ -117,3 +117,57 @@ def related_videos(video: dict, catalog: list[dict], limit: int=4) -> list[dict]
 
 def html_list(items: list[str], class_name: str) -> str:
     return f'<ul class="{class_name}">'+''.join('<li>'+html.escape(v,quote=True)+'</li>' for v in items)+'</ul>'
+
+
+# V4 : termes réellement publiés et questions fondées sur les vidéos identifiées.
+# Ne pas créer automatiquement de conseils techniques ni de faux chapitres.
+
+def video_hashtags(video: dict, limit: int = 8) -> list[str]:
+    """Hashtags effectivement présents dans le titre ou la description YouTube."""
+    source = str(video.get('title') or '') + '\n' + str(video.get('description') or '')
+    found, seen = [], set()
+    for tag in re.findall(r'(?<!\w)#([\wÀ-ÿ-]{2,35})\b', source):
+        key = tag.casefold()
+        if key in seen or key in {'short', 'shorts', 'lachainedubricolage'}:
+            continue
+        seen.add(key)
+        found.append('#' + tag)
+        if len(found) >= limit:
+            break
+    return found
+
+
+# Questions de recherche ciblées, vérifiées contre les descriptions de ces
+# vidéos. Une question qui n'est pas documentée ne doit pas être ajoutée.
+SEARCH_QUESTIONS = {
+    '-rfWTS3UIzE': (
+        ("Comment refaire la plomberie d'une maison en multicouche ?",
+         "Ce tutoriel présente la conception du réseau sanitaire domestique, depuis l'arrivée d'eau jusqu'à la distribution vers les points de puisage."),
+        ("Comment organiser une installation d'eau chaude et d'eau froide avec des nourrices ?",
+         "La vidéo aborde l'alimentation du chauffe-eau et des nourrices, les départs vers les équipements et le choix des diamètres de tubes."),
+        ("Où prévoir une vanne d'arrêt et un réducteur de pression ?",
+         "La présentation parle de la vanne d'arrêt principale et du réducteur de pression lorsque la pression du réseau est trop élevée."),
+    ),
+    'X62wo2YUgIA': (
+        ("Comment réaliser un sertissage sur du multicouche ?",
+         "Cette vidéo montre une partie consacrée au sertissage multicouche, à partir de 08:59 selon le sommaire publié par l'auteur."),
+        ("Peut-on voir du sertissage sur cuivre et multicouche ?",
+         "Le sommaire de cette vidéo présente d'abord le sertissage cuivre, puis le sertissage multicouche et les sertisseuses."),
+    ),
+    'nGJORtAWj3Y': (
+        ("Quels éléments trouve-t-on dans une installation de plomberie domestique ?",
+         "Cette présentation traite des tuyaux, des raccords, des gaines, des fixations, des diamètres, des équipements et de l'évacuation PVC."),
+    ),
+    'aFZbJm7qbw8': (
+        ("Comment coller un tuyau PVC d'évacuation ?",
+         "Le tutoriel couvre la préparation, la coupe, l'ébavurage, le nettoyage, le choix de la colle et l'assemblage des raccords PVC."),
+    ),
+    'v-Xh6-B4Phk': (
+        ("Pourquoi mon chauffe-eau électrique ne chauffe plus ?",
+         "La vidéo présente des contrôles de l'alimentation, du contacteur heures creuses, du thermostat et de la résistance."),
+    ),
+}
+
+def search_questions(video: dict) -> list[tuple[str, str]]:
+    """Questions documentées seulement pour les vidéos contrôlées."""
+    return list(SEARCH_QUESTIONS.get(video.get('id', ''), ()))
