@@ -109,5 +109,34 @@ class SiteTests(unittest.TestCase):
         self.assertIn('/repo/assets/style.css', page)
 
 
+    def test_v4_search_questions_tags_guide_and_sitemap(self):
+        from unittest import mock
+        import tempfile
+        video = site.normalize({
+            'id': '-rfWTS3UIzE',
+            'title': 'Tuto Faire son Installation de Plomberie en Multicouche',
+            'description': "Présentation de la conception du réseau sanitaire, des nourrices et du réducteur de pression.\n#Plomberie #Multicouche #Bricolage",
+            'published': '2025-12-31T06:00:01Z'
+        })
+        page = site.detail_page(video, [video], '/repo/', 'https://example.org/repo/videos/-rfWTS3UIzE/')
+        self.assertIn('Comment refaire la plomberie', page)
+        self.assertIn('Questions sur ce tutoriel', page)
+        self.assertIn('#Plomberie', page)
+        self.assertIn('guides/plomberie-multicouche/', page)
+        self.assertIn('keywords', page)
+        self.assertEqual(site.video_hashtags(video), ['#Plomberie', '#Multicouche', '#Bricolage'])
+        self.assertEqual(site.search_questions(self.a), [])
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(site, 'OUTPUT', Path(tmp) / 'publication'):
+                site.build([video, self.a], 'https://example.org/repo/')
+                self.assertTrue((site.OUTPUT / 'guides' / 'plomberie-multicouche' / 'index.html').exists())
+                sitemap = (site.OUTPUT / 'sitemap.xml').read_text(encoding='utf-8')
+                self.assertIn('/guides/plomberie-multicouche/', sitemap)
+                import xml.etree.ElementTree as ET
+                ET.fromstring(sitemap)
+                plumber_page = (site.OUTPUT / 'sujets' / 'plomberie' / 'index.html').read_text(encoding='utf-8')
+                self.assertIn('guides/plomberie-multicouche/', plumber_page)
+
+
 if __name__ == '__main__':
     unittest.main()
