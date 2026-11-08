@@ -132,7 +132,7 @@ def fetch_rss() -> list[dict]:
     ns = {'atom': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015', 'media': 'http://search.yahoo.com/mrss/'}
     result = []
     channel_id_in_feed = xml.findtext('yt:channelId', default='', namespaces=ns)
-    if channel_id_in_feed and channel_id_in_feed != CHANNEL_ID:
+    if channel_id_in_feed and channel_id_in_feed not in (CHANNEL_ID, CHANNEL_ID[2:]):
         raise RuntimeError(f'Le flux YouTube ne correspond pas à la chaîne attendue : attendu={CHANNEL_ID}, reçu={channel_id_in_feed}. Vérifier la page @Lachainedubricolage.')
     for entry in xml.findall('atom:entry', ns):
         video_id = entry.findtext('yt:videoId', default='', namespaces=ns)
