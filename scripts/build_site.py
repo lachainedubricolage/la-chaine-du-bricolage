@@ -369,14 +369,19 @@ def main() -> int:
         try: current = json.loads(ARCHIVE.read_text(encoding='utf-8'))
         except (ValueError, OSError) as exc: raise RuntimeError('Catalogue local invalide : ' + str(exc))
     incoming = []
+    api_count = None
     if not args.offline:
         key = os.environ.get('YOUTUBE_API_KEY', '').strip()
         if key:
             try:
                 incoming = fetch_complete_catalog(key)
-                print(f'Import officiel complet YouTube : {len(incoming)} vidéos')
+                api_count = len(incoming)
+                print(f'Import officiel complet YouTube : {api_count} vidéos')
             except Exception as exc:
+                print(f'::warning title=Import historique YouTube incomplet::La clé API est présente, mais l’import officiel a échoué : {exc}', file=sys.stderr)
                 print(f'API YouTube indisponible, repli sur le flux : {exc}', file=sys.stderr)
+        else:
+            print('::notice title=Importer les anciennes vidéos::Configurer le secret YOUTUBE_API_KEY pour récupérer tout l’historique.')
         try:
             incoming = merge(incoming, fetch_rss())
             print(f'Flux YouTube actualisé : {len(incoming)} entrées')
@@ -389,6 +394,19 @@ def main() -> int:
     if not ARCHIVE.exists() or ARCHIVE.read_text(encoding='utf-8') != serialized:
         ARCHIVE.write_text(serialized, encoding='utf-8')
     build(result, (args.site_url if args.site_url is not None else inferred_url()).strip())
+    print(f'Catalogue du site : {len(result)} vidéos et Shorts enregistrés')
+    summary_path = os.environ.get('GITHUB_STEP_SUMMARY', '')
+    if summary_path:
+        if api_count is not None:
+            import_status = f'✅ Import de la chaîne publique par API réussi : {api_count} vidéos renvoyées'
+        elif os.environ.get('YOUTUBE_API_KEY', '').strip():
+            import_status = '⚠️ La clé API est configurée, mais l’import historique a échoué. Le flux RSS et le catalogue précédent sont conservés.'
+        else:
+            import_status = '⏳ Import historique non activé : renseigner le secret YOUTUBE_API_KEY. Seules les publications récentes sont récupérées.'
+        with open(summary_path, 'a', encoding='utf-8') as summary:
+            summary.write('### La chaîne du bricolage — mise à jour du catalogue\n')
+            summary.write(f'- Vidéos et Shorts enregistrés : **{len(result)}**\n')
+            summary.write(f'- {import_status}\n')
     return 0
 
 
