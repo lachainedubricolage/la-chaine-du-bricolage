@@ -7,8 +7,8 @@
     "url": "https://www.youtube.com/watch?v=X5mcuCKq6z4",
     "thumbnail": "https://i.ytimg.com/vi/X5mcuCKq6z4/hqdefault.jpg",
     "category": "Tests & outillage",
-    "short": false,
-    "duration_seconds": null
+    "short": true,
+    "duration_seconds": 44
   },
   {
     "id": "h1LJMGSZ10o",
@@ -18,8 +18,8 @@
     "url": "https://www.youtube.com/watch?v=h1LJMGSZ10o",
     "thumbnail": "https://i.ytimg.com/vi/h1LJMGSZ10o/hqdefault.jpg",
     "category": "Plomberie",
-    "short": false,
-    "duration_seconds": null
+    "short": true,
+    "duration_seconds": 40
   },
   {
     "id": "DqhSPyE8IdQ",
@@ -29,8 +29,8 @@
     "url": "https://www.youtube.com/watch?v=DqhSPyE8IdQ",
     "thumbnail": "https://i.ytimg.com/vi/DqhSPyE8IdQ/hqdefault.jpg",
     "category": "Tests & outillage",
-    "short": false,
-    "duration_seconds": null
+    "short": true,
+    "duration_seconds": 28
   },
   {
     "id": "Le_Ke5clxoE",
@@ -40,8 +40,8 @@
     "url": "https://www.youtube.com/watch?v=Le_Ke5clxoE",
     "thumbnail": "https://i.ytimg.com/vi/Le_Ke5clxoE/hqdefault.jpg",
     "category": "Tests & outillage",
-    "short": false,
-    "duration_seconds": null
+    "short": true,
+    "duration_seconds": 27
   },
   {
     "id": "MVr6zeUNUSU",
@@ -52,7 +52,7 @@
     "thumbnail": "https://i.ytimg.com/vi/MVr6zeUNUSU/hqdefault.jpg",
     "category": "Conseils & astuces",
     "short": true,
-    "duration_seconds": null
+    "duration_seconds": 38
   },
   {
     "id": "v-Xh6-B4Phk",
@@ -63,7 +63,7 @@
     "thumbnail": "https://i.ytimg.com/vi/v-Xh6-B4Phk/hqdefault.jpg",
     "category": "Conseils & astuces",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 419
   },
   {
     "id": "SV4OkG3hQhs",
@@ -74,7 +74,7 @@
     "thumbnail": "https://i.ytimg.com/vi/SV4OkG3hQhs/hqdefault.jpg",
     "category": "Tests & outillage",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 636
   },
   {
     "id": "aFZbJm7qbw8",
@@ -85,7 +85,7 @@
     "thumbnail": "https://i.ytimg.com/vi/aFZbJm7qbw8/hqdefault.jpg",
     "category": "Plomberie",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 438
   },
   {
     "id": "YG9kbYe94jU",
@@ -96,7 +96,7 @@
     "thumbnail": "https://i.ytimg.com/vi/YG9kbYe94jU/hqdefault.jpg",
     "category": "Plomberie",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 350
   },
   {
     "id": "sADXLiZDsRA",
@@ -107,7 +107,7 @@
     "thumbnail": "https://i.ytimg.com/vi/sADXLiZDsRA/hqdefault.jpg",
     "category": "Tests & outillage",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 358
   },
   {
     "id": "wFaQCPcMfoA",
@@ -118,7 +118,7 @@
     "thumbnail": "https://i.ytimg.com/vi/wFaQCPcMfoA/hqdefault.jpg",
     "category": "Conseils & astuces",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 831
   },
   {
     "id": "Rx6dY2Nb680",
@@ -128,8 +128,8 @@
     "url": "https://www.youtube.com/watch?v=Rx6dY2Nb680",
     "thumbnail": "https://i.ytimg.com/vi/Rx6dY2Nb680/hqdefault.jpg",
     "category": "Tests & outillage",
-    "short": false,
-    "duration_seconds": null
+    "short": true,
+    "duration_seconds": 176
   },
   {
     "id": "A-JMRujcs9g",
@@ -140,7 +140,7 @@
     "thumbnail": "https://i.ytimg.com/vi/A-JMRujcs9g/hqdefault.jpg",
     "category": "Conseils & astuces",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 361
   },
   {
     "id": "4eXrrtv100M",
@@ -151,7 +151,7 @@
     "thumbnail": "https://i.ytimg.com/vi/4eXrrtv100M/hqdefault.jpg",
     "category": "Tests & outillage",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 330
   },
   {
     "id": "-rfWTS3UIzE",
@@ -162,6 +162,380 @@
     "thumbnail": "https://i.ytimg.com/vi/-rfWTS3UIzE/hqdefault.jpg",
     "category": "Plomberie",
     "short": false,
-    "duration_seconds": null
+    "duration_seconds": 1705
+  },
+  {
+    "id": "5h-gxx1xRjw",
+    "title": "TUTO CHEVILLE DUO HM FISCHER",
+    "description": "TUTO CHEVILLE DUO HM FISCHER",
+    "published": "2025-12-27T07:00:12Z",
+    "url": "https://www.youtube.com/watch?v=5h-gxx1xRjw",
+    "thumbnail": "https://i.ytimg.com/vi/5h-gxx1xRjw/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 263
+  },
+  {
+    "id": "X62wo2YUgIA",
+    "title": "TUTO SERTISSAGE Multicouche et Cuivre",
+    "description": "Sertir du Multicouche ou du Cuivre\n\nBienvenue sur cette vidéo TUTO pour le sertissage du tuyau de multicouche ou cuivre:\n00:00 présentation\n00:20 sertissage cuivre\n08:59 sertissage multicouche\n14:31 les sertisseuses\n\nlien sertisseuse cuivre et multicouche Amazon:\nhttps://amzn.to/49ovc5W\n\nlien sertisseuse multicouche Vevor:\nhttps://tidd.ly/4b2O0c5\n\n\nbon Visionnage",
+    "published": "2025-12-24T07:00:27Z",
+    "url": "https://www.youtube.com/watch?v=X62wo2YUgIA",
+    "thumbnail": "https://i.ytimg.com/vi/X62wo2YUgIA/hqdefault.jpg",
+    "category": "Plomberie",
+    "short": false,
+    "duration_seconds": 982
+  },
+  {
+    "id": "nGJORtAWj3Y",
+    "title": "La Plomberie à La Maison",
+    "description": "La Plomberie à La Maison\n\nVidéo de présentation de la plomberie Domestique\n\nsommaire Vidéo\n\n00:00 présentation vidéo \n00:50 les tuyaux et types de raccords\n05:24 les gaines et fixations\n07:42 les différents diamètres de raccords\n08:45 les équipements d'une installation de plomberie\n10:40 l'évacuation pvc\n\nbon visionnage",
+    "published": "2025-12-20T07:00:48Z",
+    "url": "https://www.youtube.com/watch?v=nGJORtAWj3Y",
+    "thumbnail": "https://i.ytimg.com/vi/nGJORtAWj3Y/hqdefault.jpg",
+    "category": "Plomberie",
+    "short": false,
+    "duration_seconds": 716
+  },
+  {
+    "id": "BZSkA9qeb-U",
+    "title": "Tuto Fil D'étanchéité",
+    "description": "Tuto Fil D'étanchéité\nCe tutoriel est destiné à l'étanchéité des raccords filetés.",
+    "published": "2025-12-10T15:00:32Z",
+    "url": "https://www.youtube.com/watch?v=BZSkA9qeb-U",
+    "thumbnail": "https://i.ytimg.com/vi/BZSkA9qeb-U/hqdefault.jpg",
+    "category": "Plomberie",
+    "short": false,
+    "duration_seconds": 185
+  },
+  {
+    "id": "jBiC4WD_GWI",
+    "title": "Robot aspirateur qui fuit",
+    "description": "Robot aspirateur qui fuit\n\nDans cette vidéo vous trouverez la procédure pour détartrer un robot aspirateur.\nUtiliser du détartrant liquide comme ci dessous :\nhttps://amzn.to/48o5i1P\n\nBon Visionnage",
+    "published": "2025-12-07T15:05:49Z",
+    "url": "https://www.youtube.com/watch?v=jBiC4WD_GWI",
+    "thumbnail": "https://i.ytimg.com/vi/jBiC4WD_GWI/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": true,
+    "duration_seconds": 137
+  },
+  {
+    "id": "8GG2VIuJQ2o",
+    "title": "Remplacer un cylindre de serrure",
+    "description": "Remplacer un cylindre de serrure\nBienvenue sur cette vidéo pour le remplacement d'un cylindre.\n\nN'oublie pas lors de l'achat de votre nouveau cylindre de regarder le niveau de sécurité de celui-ci.\n\nVous pouvez poser vos questions en commentaires si besoin.\n\nBon Visionnage",
+    "published": "2025-12-07T13:47:48Z",
+    "url": "https://www.youtube.com/watch?v=8GG2VIuJQ2o",
+    "thumbnail": "https://i.ytimg.com/vi/8GG2VIuJQ2o/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": true,
+    "duration_seconds": 162
+  },
+  {
+    "id": "4sMpcMYGmW0",
+    "title": "Remplacer un siphon d'évier ou lavabo",
+    "description": "Remplacer un siphon d'évier ou lavabo\n\nVous trouverez dans ce tuto les étapes pour le remplacement de votre siphon.\n\nbon visionnage",
+    "published": "2025-12-06T20:03:16Z",
+    "url": "https://www.youtube.com/watch?v=4sMpcMYGmW0",
+    "thumbnail": "https://i.ytimg.com/vi/4sMpcMYGmW0/hqdefault.jpg",
+    "category": "Plomberie",
+    "short": false,
+    "duration_seconds": 334
+  },
+  {
+    "id": "Naid6XrxQco",
+    "title": "Perceuse à Colonne electronique PARKSIDE PTBMOD710D1",
+    "description": "Perceuse à Colonne électronique PARKSIDE PTBMOD710D1\n\nVous trouverez dans cette vidéo la présentation et l'essai de la perceuse à colonne parkside vendu chez Lidl\n\nSommaire vidéo\n00:00  déballage\n03:12 présentation\n05:15 perçage bois\n09:10 percage acier\n14:05 mon avis conclusion\n\n\nlien perceuse à colonne sur le site Lidl\nhttps://tidd.ly/4pxB8PJ\n\nbon visionnage",
+    "published": "2025-12-06T19:55:47Z",
+    "url": "https://www.youtube.com/watch?v=Naid6XrxQco",
+    "thumbnail": "https://i.ytimg.com/vi/Naid6XrxQco/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 1125
+  },
+  {
+    "id": "f-DqQXeUGAs",
+    "title": "Set de réparation parquet et carrelage PARKSIDE",
+    "description": "Set de réparation parquet et carrelage PARKSIDE\n\nVous pouvez retrouver les 2 kits de réparations PARKSIDE de la vidéo avec le lien ci-dessous :\n\nSet de réparation pour parquet ou carrelage\nhttps://tidd.ly/4ccXgLk\n\n\nVous pouvez retrouver également le fonctionnement de ce kit de réparation en regardant la vidéo en lien ci dessous que j'ai déjà publier.\nhttps://youtu.be/7iWg42tHO0Y\n\n\nbon visionnage",
+    "published": "2025-11-30T17:49:19Z",
+    "url": "https://www.youtube.com/watch?v=f-DqQXeUGAs",
+    "thumbnail": "https://i.ytimg.com/vi/f-DqQXeUGAs/hqdefault.jpg",
+    "category": "Rénovation",
+    "short": false,
+    "duration_seconds": 274
+  },
+  {
+    "id": "iav_RGLLO_o",
+    "title": "VEVOR Nettoyeur Ultrason : Est-ce que ça marche vraiment sur les injecteurs ? (Test complet )",
+    "description": "VEVOR Nettoyeur Ultrason : Est-ce que ça marche vraiment sur les injecteurs ? (Test complet )\n\nAujourd’hui, je teste le nettoyeur ultrason VEVOR pour répondre à LA question que tout le monde se pose :\n\n🔋 \nMatériel utilisé dans la vidéo :\n• Nettoyeur ultrason VEVOR\n👉 https://tidd.ly/44yIaez\ncode pour avoir 8% de reduc   VEVORHOT2\n\n• Produit Nettoyant injecteur Amazon\n👉https://amzn.to/4isIwsM\n👉 Est-ce que ça marche vraiment pour nettoyer des injecteurs encrassés ?\n\nDans cette vidéo, je vous montre :\n🔧 Quelques conseils pour l'utilisation de votre nettoyeur\n🚗 Le nettoyage pas à pas de mes injecteurs\n📊 Le résultat avant / après\n\n❓ Mon avis : est-ce que ça vaut le coup d’acheter un nettoyeur ultrason pour l’entretien maison ?\n\nLe but : voir si ce nettoyeur peut vraiment redonner une seconde vie aux injecteurs et améliorer les performances du moteur.\n\nUn nettoyage par ultrason peut parfois éviter un remplacement coûteux.\n👍 \n\nN’oubliez pas !\nLike 👍 • Commentaire 💬 • Abonnement 🔔\nÇa aide énormément la chaîne !",
+    "published": "2025-11-29T22:25:46Z",
+    "url": "https://www.youtube.com/watch?v=iav_RGLLO_o",
+    "thumbnail": "https://i.ytimg.com/vi/iav_RGLLO_o/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 223
+  },
+  {
+    "id": "NOK_gz4JMwQ",
+    "title": "Faut-il acheter un injecteur extracteur ou pas ?   #25",
+    "description": "bienvenue sur cette vidéo\n\nvous trouverez ci dessous les liens pour retrouver le matériel repris dans la vidéo:\n\nnettoyant pour tapis et tissus\nhttps://amzn.to/3KbtXxg\n\ninjecteur extracteur parkside \nhttps://tidd.ly/4ooSrRS\n\naspirateur eau et poussière parkside PWD25C4\nhttps://tidd.ly/4oRRYZj\n\nbrosse de nettoyage \nhttps://amzn.to/4rgXExr\n\npulvérisateur\nen magasin action \n\nBon visionnage",
+    "published": "2025-11-23T18:19:18Z",
+    "url": "https://www.youtube.com/watch?v=NOK_gz4JMwQ",
+    "thumbnail": "https://i.ytimg.com/vi/NOK_gz4JMwQ/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 350
+  },
+  {
+    "id": "1UWE7XrgAB4",
+    "title": "Aspirateur PARKSIDE PWD25 C4. #24",
+    "description": "Aspirateur PARKSIDE PWD25 C4\nBienvenue sur cette vidéo:\n\nAvis sur l'aspirateur Eau et Poussières PARKSIDE PWD25 C4 en vente chez LIDL que vous trouverez avec le lien ci- dessous, également des sacs réutilisable qui seront utiles.\n\nlien pour l'aspirateur :\nhttps://tidd.ly/47X5ZPr\n\nsac réutilisable : \nhttps://tidd.ly/4rfgPYr\n\n\nbon visionnage",
+    "published": "2025-11-23T14:41:56Z",
+    "url": "https://www.youtube.com/watch?v=1UWE7XrgAB4",
+    "thumbnail": "https://i.ytimg.com/vi/1UWE7XrgAB4/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 326
+  },
+  {
+    "id": "0exU1CqJLXg",
+    "title": "Installation Cuvette Suspendue  #23",
+    "description": "Bienvenue,\n\nDans cette vidéo sera repris l'installation d'une cuvette suspendue, pour cela vous aurez besoin de :\n-une scie à métaux ou meuleuse d'angle ou outil multifonction pour couper les tuyaux\n-la vaseline ou liquide vaisselle\n-un mètre ruban / crayon / cutter ou lime\n-des tournevis et des clés btr le cas échéant.\n\nn'hésiter pas à laisser un commentaire si besoin d'informations.\n\nBon Bricolage",
+    "published": "2025-11-07T18:46:11Z",
+    "url": "https://www.youtube.com/watch?v=0exU1CqJLXg",
+    "thumbnail": "https://i.ytimg.com/vi/0exU1CqJLXg/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 1636
+  },
+  {
+    "id": "I5LiSdOEneE",
+    "title": "UN LASER DE PRO POUR MOINS DE 60€, EST CE POSSIBLE ?  #22",
+    "description": "UN LASER DE PRO POUR MOINS DE 60€, EST CE POSSIBLE ? \n\nBienvenue,\n\nje vous reprend ci dessous quelque lien pour trouver le laser sur Ali express ou Amazon.\nsur Ali express il faudra bien sélectionner le modèle voulu car il y a plusieurs configuration possible.\nJe vous reprend également un lien pour un laser équivalent à celui de la vidéo vendu sur Amazon et moins chère que Ali express. 👍\n\nlaser f line lien Ali express, le prix peut varier selon les périodes mais il y a souvent des coupons promo:\nhttps://s.click.aliexpress.com/e/_c4B7vk1V\n\nlaser équivalent sur AMAZON avec un prix d'environ   55 € et une valise rigide:\nhttps://amzn.to/4of0n8i\n\nBon bricolage.👍💪",
+    "published": "2025-10-12T09:22:07Z",
+    "url": "https://www.youtube.com/watch?v=I5LiSdOEneE",
+    "thumbnail": "https://i.ytimg.com/vi/I5LiSdOEneE/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 556
+  },
+  {
+    "id": "weuAd3GDt7s",
+    "title": "Les Protections Electriques. #20",
+    "description": "Bienvenue dans cette vidéo sur la présentation des protections électriques.",
+    "published": "2025-10-11T16:04:59Z",
+    "url": "https://www.youtube.com/watch?v=weuAd3GDt7s",
+    "thumbnail": "https://i.ytimg.com/vi/weuAd3GDt7s/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 580
+  },
+  {
+    "id": "OfzXQMypRVY",
+    "title": "Faire Un Joint de Mastic Acrylique. #21",
+    "description": "faire un joint de mastic acrylique\n\nlien pour des cartouches de mastic acrylique : \n\ncartouche mastic acrylique SIKA SIKASEAL 188\n- https://amzn.to/4h5mj3t\n\ncartouche mastic acrylique BOSTIK ACRYL S A550\n- https://amzn.to/4pVDJU8\n\nBon visionnage",
+    "published": "2025-10-04T18:39:34Z",
+    "url": "https://www.youtube.com/watch?v=OfzXQMypRVY",
+    "thumbnail": "https://i.ytimg.com/vi/OfzXQMypRVY/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": true,
+    "duration_seconds": 128
+  },
+  {
+    "id": "MSpvRbwqMIk",
+    "title": "Installation électrique Domestique #19",
+    "description": "",
+    "published": "2025-06-28T20:10:48Z",
+    "url": "https://www.youtube.com/watch?v=MSpvRbwqMIk",
+    "thumbnail": "https://i.ytimg.com/vi/MSpvRbwqMIk/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 323
+  },
+  {
+    "id": "hQZIl0kTzhs",
+    "title": "ECOVACS GOAT A 1600 RTK après 3 mois d'utilisation. #18",
+    "description": "Petit retour d'expérience du robot tondeuse Ecovacs GOAT A 1600 RTK après 3 mois de fonctionnement 1 fois tous les 2 jours .\n\nlien pour le robot avec une réduction de 5% : \nhttps://www.ecovacs.com/fr/g/referral-new/wkwlzbleev \n\nlien affilié pour les lames de rechanges : \nhttps://amzn.to/3HE3qad\n\nn'hésitez pas à me contacter par mail si vous avez des questions sur ce robot tondeuse \n\nbon visionnage et à bientôt",
+    "published": "2025-06-14T19:22:51Z",
+    "url": "https://www.youtube.com/watch?v=hQZIl0kTzhs",
+    "thumbnail": "https://i.ytimg.com/vi/hQZIl0kTzhs/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 241
+  },
+  {
+    "id": "KPJ8UOGKGU8",
+    "title": "Installation Relais Shelly Pro 3EM. #16",
+    "description": "Découvrez comment surveiller précisément votre consommation électrique grâce au Shelly Pro 3EM !\n\nDans cette vidéo, je vous montre étape par étape comment installer le Shelly Pro 3EM, un compteur intelligent triphasé idéal pour suivre votre consommation d’énergie en temps réel.\n👉 Installation dans le tableau électrique\n👉 Connexion des sondes de courant\n\n📲 Lien affilié vers le produit :\n\nhttps://amzn.to/3J2kV5f\n\n📦 Matériel utilisé :\n• Shelly Pro 3EM\n• Pince ampèremétrique (CT)\n• Tournevis isolé\n• Gants de sécurité (une fois le tableau hors tension les gants ne sont plus nécessaire)\nles raccordements sont à effectuer hors tension.\n\n👍 Abonnez-vous pour d’autres tutos domotique & énergie !\n\n#ShellyPro3EM #Domotique #Électricité #CompteurIntelligent #SmartHome",
+    "published": "2025-06-14T09:27:42Z",
+    "url": "https://www.youtube.com/watch?v=KPJ8UOGKGU8",
+    "thumbnail": "https://i.ytimg.com/vi/KPJ8UOGKGU8/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 219
+  },
+  {
+    "id": "DsIVcZoiOgk",
+    "title": "Choisir sa première visseuse. #15",
+    "description": "Choisir sa première visseuse.\n\nBienvenue sur cette vidéo:\n\ncette vidéo est destiné aux bricoleurs voulant acquérir leur première visseuse sans fil, pour ma part \nje vous conseille de regarder de près les points suivants:\n\n-la marque : ne prenait pas du low-cost si vous aller bricoler souvent et privilégié des marques pro si vous avez un budget à partir de 150 €\n\n- le nombre de batterie avec le pack de visseuse et de préférence au minimum 4 AH en 18v (12v c'est un peu léger).\n\n-un chargeur rapide qui vous permettra d'enchainer les taches de bricolage.\n\n-l'ergonomie de la visseuse ainsi que le nombre de réglage de couple \n\n-un moteur brushless (sans charbon ) pour une plus grande durée de vie\n\n-le couple du moteur en NM (plus c'est élevée pllus le moteur a du couple)\n\n-de préférence en pack avec une valise rigide pour un stockage a l'abris\n\nC'est déjà un bon début après l'avantage avec les marque pro c'est que vous pouvez racheter \nuniquement le corps de la machine (sans batterie/chargeur ) si besoin, c'est toujours un petit plus.\n\nPersonnellement je vous dirais après de rester sur la même marque pour le reste de votre électroportatif afin de pouvoir intervertir les batteries si besoin c'est plus pratique.\n\nn'hésiter pas en commentaire à dire la première visseuse que vous avez eu et si cela a été un bon choix.\n\nbon visionnage",
+    "published": "2025-02-01T13:31:29Z",
+    "url": "https://www.youtube.com/watch?v=DsIVcZoiOgk",
+    "thumbnail": "https://i.ytimg.com/vi/DsIVcZoiOgk/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 773
+  },
+  {
+    "id": "bIRC-7T1VEw",
+    "title": "Utilisation tournevis et pinces. #14",
+    "description": "bienvenue sur cette vidéo de présentation concernant le choix et l'utilisation de vos tournevis et pinces.\n\nci dessous quelques exemples de prix qualité prix:\nlot tournevis stanley 28€\nhttps://amzn.to/40u27jP\n\npince multiprise facom 15€\nhttps://amzn.to/42smwZe\n\npince coupante stanley 15€\nhttps://amzn.to/4hxcVVe\n\npince a denuder jokari 18€\nhttps://amzn.to/4hqpLo8\n\nlot de 4 pinces qualité prix 25€\nhttps://amzn.to/4juFd4G\n\n\nn'hesiter pas a comparer les prix mais si possible rester sur des marques reconnues comme facom, stanley, sam, mob, bost, wera, ks tools.\n\nles liens ci-dessus sont affiliés ( j'ai une petite commission mais cela ne coute rien, cela participe au développement de la chaine pour proposer de plus en plus de contenus après vous êtes libre de l'acheter si intéresser ou pas bien évidemment. )\n\nbon visionnage",
+    "published": "2025-01-26T16:39:28Z",
+    "url": "https://www.youtube.com/watch?v=bIRC-7T1VEw",
+    "thumbnail": "https://i.ytimg.com/vi/bIRC-7T1VEw/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 1110
+  },
+  {
+    "id": "DORyNlqelpk",
+    "title": "les fixations courantes. #12",
+    "description": "bienvenue sur cette vidéo de présentation des fixations les plus courantes.\n\nchapitres de la vidéo:\n 00:00 présentation\n 01:09 fixations cloison plaque de plâtre\n 07:25 fixations murs en briques/ béton/matériaux pleins\n 14:37 la visserie \n 15:53 fixations murs bois (il faut uniquement des vis le plus souvent )\n 17:00 fixations murs en carreaux de plâtre/carrelage\n\nje ferais également d'autres vidéos sur le sujet mais il y a énormément de choses à dire sur les fixations.\n\nexemple de prix correct pour vos achats:\n(après libre à vous d'acheter ce que vous souhaiter)\n\ncheville plastique  duo power 6x30mm 11€\nhttps://amzn.to/3PQME8A\n\ncheville plastique duo power 8x40mm 9€\nhttps://amzn.to/3CsbNmZ\n\ncheville duo hm 5x55 20€\nhttps://amzn.to/3WzVOdD\n\nbox chevilles + vis fischer 19€\nhttps://amzn.to/3Ec6F7b\n\n\naprès vous avez une multitude de choix sur internet et n'oublier pas de comparer avant de faire vos achats car les écarts de prix peuvent être important pour le même produit.\n\n\nles liens ci-dessus sont affiliés ( j'ai une petite commission mais cela ne coute rien, cela participe au développement de la chaine pour proposer de plus en plus de contenus après vous êtes libre de l'acheter si intéresser ou pas bien évidemment. )\n\nBon Visionnage",
+    "published": "2025-01-26T14:22:40Z",
+    "url": "https://www.youtube.com/watch?v=DORyNlqelpk",
+    "thumbnail": "https://i.ytimg.com/vi/DORyNlqelpk/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 1109
+  },
+  {
+    "id": "A2GGGa-EgRM",
+    "title": "piège a taupes. #13",
+    "description": "bienvenue sur cette vidéo\n\nvous trouverez ci-dessous les liens pour vous procurer le piège repris dans la vidéo, il existe plusieurs pack avec ou sans accessoire .\n\nSWISSINNO Piège à campagnols PRO SuperCat\npack avec sonde, creusoir et 1 piège :\nhttps://amzn.to/4judpgE\n\nSWISSINNO Piège à campagnols PRO SuperCat\npack avec sonde, creusoir et 2 piège :\nhttps://amzn.to/4jq7b1g\n\nSWISSINNO Piège à campagnols PRO SuperCat\npiège seul:\nhttps://amzn.to/4joVU1k\n\n\nle piège est de la marque SWISSINNO qui vend tout types de pièges/répulsifs divers pour protéger votre jardin.\n\n\nles liens ci dessus sont affiliés( j'obtiens une petite commission mais cela ne coute rien, cela participe au développement de la chaine pour proposer de plus en plus de contenus après vous êtes libre de l'acheter si intéresser ou pas bien évidemment )\n\nbon visionnage et à très bientôt sur la chaine",
+    "published": "2025-01-22T20:16:27Z",
+    "url": "https://www.youtube.com/watch?v=A2GGGa-EgRM",
+    "thumbnail": "https://i.ytimg.com/vi/A2GGGa-EgRM/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 252
+  },
+  {
+    "id": "xfHpchD3d78",
+    "title": "Pistolet à Silicone Electrique Ali express. #11",
+    "description": "Pistolet à Silicone Electrique Ali express. #11\n\nBienvenue sur cette vidéos de présentation du pistolet a silicone électrique premier prix disponible sur ALI EXPRESS.\n\nle pistolet est disponible avec 1 ou batteries à choisir sur la page internet, si vous avez des outils Makita 18v il est possible de le faire fonctionner avec .\n\nlien page ALIEXPRESS pour le pistolet ci dessous, il est actuellement en promotion a 47 €(après il est souvent dans les 50-55€) :\nhttps://s.click.aliexpress.com/e/_oBJVvJf\n\nvous pourrez le retrouver sur d'autres site mais cela revient plus chère pour le même produit et sur Ali express les frais de port sont gratuit.\n\nle lien ci dessus est affilié( j'obtiens une commission mais cela ne coute rien, cela participe au développement de la chaine pour proposer de plus en plus de contenus après vous êtes libre de l'acheter si intéresser ou pas bien évidemment )\n\nbon visionnage et à très bientôt sur la chaine",
+    "published": "2025-01-19T19:08:07Z",
+    "url": "https://www.youtube.com/watch?v=xfHpchD3d78",
+    "thumbnail": "https://i.ytimg.com/vi/xfHpchD3d78/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 953
+  },
+  {
+    "id": "5qL-5bkR-GQ",
+    "title": "les différents types de forets / trépans #10",
+    "description": "cette vidéo explicative est destiné aux bricoleurs novices afin de pouvoir utiliser les bons forets selon les matériaux a percer.\n\nCi dessous quelques liens pour des set de forets intéressant pour une utilisation occasionnel afin de démarrer dans le bricolage sans avoir un gros budget :\n\nset de forets a metaux:\nhttps://tidd.ly/3EbGa1o (lidl 7€)\n\nset de forets beton:\nhttps://tidd.ly/4hjTfEn (lidl 7€)\n\nset de forets bois:\nhttps://tidd.ly/4hic9vh (lidl 7€)\n\nset de scie cloche metal lidl:\nhttps://tidd.ly/42kpm2p (15€)\n\nSi vous aimeriez d'autres videos si des outils de bricolage n'hesiter pas à laisser un commentaire, le but étant de pouvoir expliquer les bases avant de développer des sujets plus techniques.\n\nles liens ci dessus sont affiliés (une commission est reversé mais cela ne vous coute rien et sert a aider au financement des vidéos de la chaine. libre a vous de choisir )\n\nbon visionnage",
+    "published": "2025-01-19T17:18:50Z",
+    "url": "https://www.youtube.com/watch?v=5qL-5bkR-GQ",
+    "thumbnail": "https://i.ytimg.com/vi/5qL-5bkR-GQ/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 545
+  },
+  {
+    "id": "RCYWM2HmInI",
+    "title": "caméra d'inspection VEVOR #9",
+    "description": "bienvenue,\n\nvous trouverez dans la description les liens affiliés afin de retrouver la caméra d'inspection VEVOR sur le site du fabricant avec le lien ci dessous:\nhttps://tidd.ly/429SQQo\n\n\nbon visionnage à tous et a bientôt pour d'autres vidéos.",
+    "published": "2025-01-12T20:41:06Z",
+    "url": "https://www.youtube.com/watch?v=RCYWM2HmInI",
+    "thumbnail": "https://i.ytimg.com/vi/RCYWM2HmInI/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 743
+  },
+  {
+    "id": "M597yAryVW4",
+    "title": "installer un luminaire type suspension sur plot DCL. #8",
+    "description": "Bienvenue,\nDans cette vidéo est repris l'installation de 2 types de luminaires type suspension:\n\n-05:00 installation de luminaire en démontant le système dcl\n-08:50 installation de luminaire avec le système DCL\n\nn'oublier pas de couper l'électricité avant d'intervenir\n\nl'installation nécessite :\n-1 coupe coupante\n-1 pince a dénudé\n-1 petit tournevis plat\n-1 tournevis cruciforme\n-si possible un dénude câble pour la faciliter\n\nlien affilié pour le dénude câble pour le câble de luminaire:\nhttps://amzn.to/3DObbIT\n\nn'hésiter pas à partager vos retours si cela  vous a aider pour votre montage.\n\nbon bricolage",
+    "published": "2025-01-12T18:35:54Z",
+    "url": "https://www.youtube.com/watch?v=M597yAryVW4",
+    "thumbnail": "https://i.ytimg.com/vi/M597yAryVW4/hqdefault.jpg",
+    "category": "Électricité",
+    "short": false,
+    "duration_seconds": 1303
+  },
+  {
+    "id": "CU6dOOhyYrM",
+    "title": "installer un plafonnier sur pot de centre DCL #7",
+    "description": "tutoriel pour l'installation d'un plafonnier sur un pot de centre DCL.\n\nsi vous n'avez pas de pot de centre DCL et que vous souhaiter en mettre en place cela est possible il suffit juste d'acheter un kit de pot de centre dcl 67mm avec fiche dcl. \nsi votre plafond est en plaque de plâtre cette modification est rapide.\n\nvous pourrez retrouver dans les magasins de bricolage ou encore sur un site de vente internet.\n\nlien Amazon ci dessous (lien affilié) pour un pot de centre + douille complet standard:\nhttps://amzn.to/40h5M5W\n\nBon visionnage",
+    "published": "2024-12-29T17:09:33Z",
+    "url": "https://www.youtube.com/watch?v=CU6dOOhyYrM",
+    "thumbnail": "https://i.ytimg.com/vi/CU6dOOhyYrM/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 1002
+  },
+  {
+    "id": "q9J1g4qJqOE",
+    "title": "Test Aspirateur Extracteur Parkside Lidl. #6",
+    "description": "#6 Test Aspirateur Extracteur Parkside Lidl\nbienvenue dans cette vidéo pour le test de l'aspirateur extracteur PARKSIDE PWS 20 \nl'aspirateur extracteur est vendu chez LIDL à un tarif d'environ 89 euros.(lien affilié)\n\nhttps://tidd.ly/4a5Ehkw\n\nvous trouverez ci-dessous les liens affilié pour le nettoyant et la brosse utiliser dans ce test :\nnettoyant\nhttps://amzn.to/4fORte2\n\nbrosse rotative (embout perceuse )pour nettoyage \nhttps://amzn.to/4g7Ohde\n\npour la brosse vous pouvez également utiliser une simple brosse manuel mais cela sera plus long et plus fatiguant.\n\ninstruction pour le nettoyage:\n1-Asperger le tissus/moquette à nettoyer \n2-Laisser agir 1min le produit puis brosser les tissus\n3-Mettre en marche l'aspirateur et nettoyer les tissus brosser\n4-Recommencer l'opération si le support n'est pas parfaitement propre\n5- Laisser sécher quelques heures\n6-Apprécier le résultat \n\ntimelaps de la vidéo:\n-00:00 présentation produit\n-08:50 partie nettoyage\n-18:30 conclusion et avant /après nettoyage\n\nBonne Journée et à bientôt pour d'autres vidéos.",
+    "published": "2024-11-29T19:16:21Z",
+    "url": "https://www.youtube.com/watch?v=q9J1g4qJqOE",
+    "thumbnail": "https://i.ytimg.com/vi/q9J1g4qJqOE/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 1206
+  },
+  {
+    "id": "o75FaPk852Q",
+    "title": "test laser de chantier premier prix. #5",
+    "description": "Dans cette vidéo vous trouverez mon retour d'expérience pour ce laser premier prix, il est idéal pour les travaux de terrassement, assainissement, ou encore pose de clôture.\n\nPour les personnes qui serait intéresser vous pourrez le retrouvez avec les liens amazon ci dessous (lien affilié):\n\nkit laser de chantier (sans mire et trépied)\nhttps://amzn.to/3AWTiq6\n\nkit laser de chantier complet (avec la mire et le trépied)\nhttps://amzn.to/4fXVH2H\n\nsi vous avez des questions vous pouvez me contacter par le mail suivant: \ncontact.lachainedubricolage@gmail.com",
+    "published": "2024-11-22T20:07:37Z",
+    "url": "https://www.youtube.com/watch?v=o75FaPk852Q",
+    "thumbnail": "https://i.ytimg.com/vi/o75FaPk852Q/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 578
+  },
+  {
+    "id": "uIZhndkDZeY",
+    "title": "Comment Choisir Ses Ampoules. #4",
+    "description": "Comment Choisir Ses Ampoules.\n\nRetrouvez dans cette video les éléments à regarder pour choisir correctement vos ampoules pour vos luminaires.\n\n00:05 sommaire\n00:46 types dampoules\n02:58 types de culots\n05:10 puissance / rendu lumineux\n08:25 à retenir",
+    "published": "2024-11-21T14:49:40Z",
+    "url": "https://www.youtube.com/watch?v=uIZhndkDZeY",
+    "thumbnail": "https://i.ytimg.com/vi/uIZhndkDZeY/hqdefault.jpg",
+    "category": "Électricité",
+    "short": false,
+    "duration_seconds": 618
+  },
+  {
+    "id": "gnosADv41ww",
+    "title": "Réparation fuite chasse d'eau wc suspendu  #3",
+    "description": "dans cette vidéo sera repris la marche à suivre pour nettoyer une chasse d'eau afin d'éviter les fuites dû au calcaire.\n\nPour des bâtis support d'autres marques il se peut que la marche a suivre soit un peu différentes.\n\nmodèle repris en video Geberit UP320\n\nbon visionnage",
+    "published": "2024-11-18T16:45:17Z",
+    "url": "https://www.youtube.com/watch?v=gnosADv41ww",
+    "thumbnail": "https://i.ytimg.com/vi/gnosADv41ww/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 621
+  },
+  {
+    "id": "7iWg42tHO0Y",
+    "title": "kit de réparation sol stratifié #2",
+    "description": "Kit de réparation pour sol stratifié : une solution efficace pour réparer les petites imperfections dû a un choc.\n\nil vous permettra de refaire un accroc dans votre sol stratifié, cela demande un peu de temps mais le résultat est propre et durable.\n\nvous pourrez trouvez ci dessous le lien Amazon concernant ce kit de réparation .\n\nlien kit de réparation stratifié: \nhttps://amzn.to/3UVqGo0\n\nlien affilié amazon\n\nmerci pour votre visionnage\n\npour toutes question voici le mail de la chaine : contact.lachainedubricolage@gmail.com",
+    "published": "2024-11-17T13:51:36Z",
+    "url": "https://www.youtube.com/watch?v=7iWg42tHO0Y",
+    "thumbnail": "https://i.ytimg.com/vi/7iWg42tHO0Y/hqdefault.jpg",
+    "category": "Conseils & astuces",
+    "short": false,
+    "duration_seconds": 549
+  },
+  {
+    "id": "wXTXV1UCUuo",
+    "title": "Composer sa caisse à outils pour un budget de 150€  #1",
+    "description": "Composition d'une caisse à outils pour un budget de 150€ environ: Découvrez les outils essentiels à avoir dans cette vidéo, je vous propose une liste complète d'outils indispensables pour constituer une caisse à outils de qualité, et ce, à un budget abordable. Vous apprendrez à choisir les outils de base nécessaires pour réaliser diverses tâches de bricolage.\n\ndétails de la caisse:\n\n-caisse plastique environ 21€\nhttps://amzn.to/3UTH34s\n-lot de tournevis 15€\nhttps://amzn.to/3AzoxHH\n-pince multiprise 12€\nhttps://amzn.to/3Z9IGO3\n-pince coupante 15€\nhttps://amzn.to/4fQMWqW\n-tournevis a embout avec assortiment embouts 8€\nhttps://amzn.to/4hSa62c\n-jeu de clés 6 pans 15€\nhttps://amzn.to/4fzZ53V\n-lot de clés plates mixte 11€\nhttps://amzn.to/3YU0Ced\n-mètre ruban 7€\nhttps://amzn.to/3UOLQnt\n-marteau 11€\nhttps://amzn.to/3AW3sXQ\n-burin 6€\nhttps://amzn.to/4eDE4Ea\n-clés a molette 15€\nhttps://amzn.to/3Cx6ySP\n-scie a metaux 8€\nhttps://amzn.to/48UqKdj\n-lampe frontal 8€\nhttps://amzn.to/3Z6Euyu\n-cutter 5€\nhttps://amzn.to/418h1hV\n\nLes liens repris dans cette description sont affiliés. \n\n\n\nDans cette liste j'ai privilégié des outils de bonnes qualité après vous pouvez prendre des marques distributeur type dexter/ magnusson/ mac allister ce qui reviendra moins chère mais en sachant que niveau qualité vous serez un cran en dessous. \n\nj'ai repris des liens sur Amazon car selon les localisations de chacun ceci est accessible pour tous vu que cela est vendu en ligne après vous pouvez bien évidemment comparé avec vos magasins de bricolage proche de chez vous si cela est le cas.\n\npour les marques les plus connues : Facom, bost , stanley , sam \n\nsi vous avez des questions voici mon mail de contact:\ncontact.lachainedubricolage@gmail.com",
+    "published": "2024-11-16T07:53:32Z",
+    "url": "https://www.youtube.com/watch?v=wXTXV1UCUuo",
+    "thumbnail": "https://i.ytimg.com/vi/wXTXV1UCUuo/hqdefault.jpg",
+    "category": "Tests & outillage",
+    "short": false,
+    "duration_seconds": 896
   }
 ]
