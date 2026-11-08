@@ -41,6 +41,7 @@ jobs:
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           SITE_URL: ${{ vars.SITE_URL }}
+          CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
         run: python scripts/build_site.py
 
       - name: Archiver les nouvelles vidéos dans GitHub
@@ -65,3 +66,17 @@ jobs:
       - name: Mettre le site en ligne
         id: deploiement
         uses: actions/deploy-pages@v4
+
+      - name: Prévenir Bing et les moteurs compatibles IndexNow
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: python scripts/indexnow.py
+
+      - name: Enregistrer les notifications IndexNow réussies
+        shell: bash
+        run: |
+          git add data/indexnow-state.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Mémoriser les URL signalées à IndexNow"
+            git push
+          fi
