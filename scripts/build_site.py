@@ -101,13 +101,39 @@ def normalize(item: dict) -> dict | None:
     return result
 
 
+
+def resolve_channel_id() -> str:
+    """Obtient l'identifiant public depuis l'URL officielle @Lachainedubricolage.
+
+    Ne pas faire confiance à l'ID stocké si YouTube a renvoyé un autre canal.
+    En cas d'échec de résolution, la validation stricte du flux reste active.
+    """
+    try:
+        page = fetch(CHANNEL_URL).decode('utf-8', errors='replace')
+        patterns = (
+            r'"externalId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"',
+            r'"channelId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"',
+            r'"browseId"\s*:\s*"(UC[A-Za-z0-9_-]{22})"',
+            r'channel_id=(UC[A-Za-z0-9_-]{22})',
+            r'/channel/(UC[A-Za-z0-9_-]{22})',
+        )
+        for pattern in patterns:
+            match = re.search(pattern, page)
+            if match:
+                return match.group(1)
+        print('Impossible de lire l’identifiant sur la page de la chaîne ; vérification RSS stricte conservée.', file=sys.stderr)
+    except Exception as exc:
+        print(f'Page YouTube de la chaîne temporairement indisponible : {exc}', file=sys.stderr)
+    return CHANNEL_ID
+
+
 def fetch_rss() -> list[dict]:
     xml = ET.fromstring(fetch(FEED_URL))
     ns = {'atom': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015', 'media': 'http://search.yahoo.com/mrss/'}
     result = []
     channel_id_in_feed = xml.findtext('yt:channelId', default='', namespaces=ns)
     if channel_id_in_feed and channel_id_in_feed != CHANNEL_ID:
-        raise RuntimeError('Le flux YouTube ne correspond pas à la chaîne attendue.')
+        raise RuntimeError(f'Le flux YouTube ne correspond pas à la chaîne attendue : attendu={CHANNEL_ID}, reçu={channel_id_in_feed}. Vérifier la page @Lachainedubricolage.')
     for entry in xml.findall('atom:entry', ns):
         video_id = entry.findtext('yt:videoId', default='', namespaces=ns)
         media_group = entry.find('media:group', ns)
@@ -332,6 +358,12 @@ def main() -> int:
     parser.add_argument('--offline', action='store_true', help='Ne pas accéder à YouTube : créer la prévisualisation à partir du catalogue local.')
     parser.add_argument('--site-url', default=None, help='URL publique complète du site (GitHub Pages, domaine propre...)')
     args = parser.parse_args()
+    global CHANNEL_ID, FEED_URL
+    resolved = resolve_channel_id() if not args.offline else CHANNEL_ID
+    if resolved != CHANNEL_ID:
+        print(f'Identifiant YouTube corrigé depuis le profil officiel : {CHANNEL_ID} -> {resolved}')
+        CHANNEL_ID = resolved
+        FEED_URL = f'https://www.youtube.com/feeds/videos.xml?channel_id={CHANNEL_ID}'
     current = []
     if ARCHIVE.exists():
         try: current = json.loads(ARCHIVE.read_text(encoding='utf-8'))
