@@ -247,7 +247,7 @@ def layout(title: str, description: str, content: str, base_path: str, full_url:
     search_url = path_url(base_path, 'catalogue/')
     return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>{escape(title)}</title><meta name="description" content="{escape(description)}">
 {canonical}<meta property="og:type" content="website"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}">{ogurl}{ogimage}<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="{escape(path_url(base_path, 'assets/chaine-logo.jpg'))}" type="image/jpeg"><link rel="stylesheet" href="{escape(css)}">{schema_tag}{extra_head}</head>
+<meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1"><link rel="alternate" type="application/atom+xml" title="Nouvelles vidéos" href="{escape(path_url(base_path, 'feed.xml'))}"><link rel="icon" href="{escape(path_url(base_path, 'assets/chaine-logo.jpg'))}" type="image/jpeg"><link rel="stylesheet" href="{escape(css)}">{schema_tag}{extra_head}</head>
 <body data-base="{escape(base_path)}"><a class="skip" href="#contenu">Aller au contenu</a>
 <header class="site-header"><div class="container nav-shell">{logo(base_path)}
 <form class="header-search" role="search" action="{escape(search_url)}" method="get"><input type="search" name="q" aria-label="Rechercher un tutoriel" placeholder="Rechercher un tuto, un outil…"><button type="submit" aria-label="Lancer la recherche">⌕</button></form>
@@ -298,12 +298,16 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
     if len(related) < 3:
         related += [x for x in videos if x['id'] != v['id'] and x not in related][:3 - len(related)]
     iso = v['published']
-    schema = {'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': shorten(description, 4000), 'thumbnailUrl': [v['thumbnail']], 'embedUrl': f'https://www.youtube-nocookie.com/embed/{v["id"]}', 'contentUrl': v['url'], 'publisher': {'@type': 'Organization', 'name': CHANNEL_NAME, 'sameAs': CHANNEL_URL}}
+    schema = {'@context': 'https://schema.org', '@type': 'VideoObject', 'name': v['title'], 'description': shorten(description, 4000), 'thumbnailUrl': [v['thumbnail']], 'embedUrl': f'https://www.youtube-nocookie.com/embed/{v["id"]}', 'sameAs': v['url'], 'inLanguage': 'fr-FR', 'publisher': {'@type': 'Organization', 'name': CHANNEL_NAME, 'sameAs': CHANNEL_URL}}
     if iso: schema['uploadDate'] = iso
     if v.get('duration_seconds') is not None: schema['duration'] = f'PT{v["duration_seconds"]}S'
-    if site_url: schema['mainEntityOfPage'] = site_url
+    if site_url:
+        schema['mainEntityOfPage'] = site_url
+        schema['url'] = site_url
+    else:
+        schema['url'] = v['url']
     desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
-    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(v['title'])}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player" data-video="{escape(v['id'])}" style="background-image:linear-gradient(180deg,rgba(8,20,38,.1),rgba(8,20,38,.56)),url('{escape(v['thumbnail'])}')"><button class="player-button" type="button" aria-label="Lire la vidéo {escape(v['title'])}"><span aria-hidden="true">▶</span> Lire la vidéo</button></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que vous allez découvrir</h2>{desc_html}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
+    content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(v['title'])}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(v['title'])}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que vous allez découvrir</h2>{desc_html}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
     return layout(f'{v["title"]} | La chaîne du bricolage', shorten(description, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
 
 
@@ -329,7 +333,34 @@ def build(videos: list[dict], site_url: str) -> None:
         (directory / 'index.html').write_text(detail_page(v, videos, base_path, absolute(uri)), encoding='utf-8')
         if site_url: urls.append((absolute(uri), v.get('published', '')[:10]))
     if site_url:
-        sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join('<url><loc>' + escape(url) + '</loc>' + ('<lastmod>' + escape(d) + '</lastmod>' if d else '') + '</url>\n' for url,d in urls) + '</urlset>'
+        pages = [
+            f'<url><loc>{escape(absolute())}</loc></url>',
+            f'<url><loc>{escape(absolute("catalogue/"))}</loc></url>',
+        ]
+        for v in videos:
+            url = absolute('videos/' + v['id'] + '/')
+            date = v.get('published') or ''
+            lastmod = f'<lastmod>{escape(date[:10])}</lastmod>' if re.match(r'^\d{4}-\d{2}-\d{2}', date) else ''
+            pub = f'<video:publication_date>{escape(date)}</video:publication_date>' if date else ''
+            secs = v.get('duration_seconds')
+            duration = f'<video:duration>{secs}</video:duration>' if secs is not None and 1 <= secs <= 28800 else ''
+            video = (
+                '<video:video>'
+                f'<video:thumbnail_loc>{escape(v["thumbnail"])}</video:thumbnail_loc>'
+                f'<video:title>{escape(shorten(v["title"], 100))}</video:title>'
+                f'<video:description>{escape(shorten(v["description"] or v["title"], 1900))}</video:description>'
+                f'<video:player_loc allow_embed="yes">{escape("https://www.youtube-nocookie.com/embed/" + v["id"])}</video:player_loc>'
+                f'{pub}{duration}'
+                '</video:video>'
+            )
+            pages.append(f'<url><loc>{escape(url)}</loc>{lastmod}{video}</url>')
+        sitemap = (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+            'xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">\n'
+            + '\n'.join(pages)
+            + '\n</urlset>\n'
+        )
         (OUTPUT / 'sitemap.xml').write_text(sitemap, encoding='utf-8')
     (OUTPUT / 'robots.txt').write_text('User-agent: *\nAllow: /\n' + (f'Sitemap: {absolute("sitemap.xml")}\n' if site_url else ''), encoding='utf-8')
     entries = ''.join('<entry><title>' + escape(v['title']) + '</title><id>' + escape(v['url']) + '</id><link href="' + escape(v['url']) + '"/><updated>' + escape(v['published'] or '2026-01-01T00:00:00Z') + '</updated><summary>' + escape(shorten(v['description'], 600)) + '</summary></entry>' for v in videos[:50])
