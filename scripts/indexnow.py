@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ARCHIVE = ROOT / 'data' / 'catalogue.json'
 STATE = ROOT / 'data' / 'indexnow-state.json'
 KEY = 'a0e21430e607e359e7b289360c1db2be'
-VERSION = 'seo-v3-1'
+VERSION = 'seo-v4-1'
 
 
 def url_for_site() -> str:
@@ -59,6 +59,8 @@ def changed_urls(base: str, catalog: list[dict], previous: dict[str,str], curren
     urls = [base, base+'catalogue/']
     urls += [base+'sujets/'+topic_slug(category)+'/' for category in topics]
     urls += [base+'videos/'+v['id']+'/' for v in changed]
+    if any(v.get('category') == 'Plomberie' for v in changed):
+        urls.append(base+'guides/plomberie-multicouche/')
     return list(dict.fromkeys(urls))
 
 
