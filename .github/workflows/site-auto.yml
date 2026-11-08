@@ -44,6 +44,27 @@ jobs:
           CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
         run: python scripts/build_site.py
 
+      - name: Vérifier l'intégration Cloudflare Web Analytics
+        env:
+          CF_WEB_ANALYTICS_TOKEN: ${{ vars.CF_WEB_ANALYTICS_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          token = os.environ.get('CF_WEB_ANALYTICS_TOKEN', '').strip()
+          pages = list(Path('site').rglob('*.html'))
+          injected = [p for p in pages if 'static.cloudflareinsights.com/beacon.min.js' in p.read_text(encoding='utf-8')]
+          if not token:
+              print('::notice title=Cloudflare Web Analytics::Variable CF_WEB_ANALYTICS_TOKEN absente ou vide ; suivi non activé.')
+          elif not re.fullmatch(r'[0-9a-fA-F]{32}', token):
+              print('::warning title=Cloudflare Web Analytics::Jeton fourni mais format invalide (attendu 32 caractères hexadécimaux).')
+          elif len(injected) == len(pages) and pages:
+              print(f'Cloudflare Web Analytics : suivi installé dans {len(injected)} pages HTML.')
+          else:
+              raise SystemExit(f'Le jeton est valide mais le script est présent dans {len(injected)} pages sur {len(pages)}.')
+          PY
+
       - name: Archiver les nouvelles vidéos dans GitHub
         shell: bash
         run: |
