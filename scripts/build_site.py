@@ -257,18 +257,18 @@ def layout(title: str, description: str, content: str, base_path: str, full_url:
         if re.fullmatch(r'[0-9a-fA-F]{32}', analytics_token) else ''
     )
     return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff"><meta name="color-scheme" content="light"><title>{escape(title)}</title><meta name="description" content="{escape(description)}">
-{canonical}<meta property="og:type" content="website"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}">{ogurl}{ogimage}<meta name="twitter:card" content="summary_large_image">
+{canonical}<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="La chaîne du bricolage"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(description)}">{ogurl}{ogimage}<meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index, follow, max-image-preview:large, max-video-preview:-1"><link rel="alternate" type="application/atom+xml" title="Nouvelles vidéos" href="{escape(path_url(base_path, 'feed.xml'))}"><link rel="icon" href="{escape(path_url(base_path, 'assets/chaine-logo.jpg'))}" type="image/jpeg"><link rel="stylesheet" href="{escape(css)}">{schema_tag}{extra_head}</head>
 <body data-base="{escape(base_path)}"><a class="skip" href="#contenu">Aller au contenu</a>
 <header class="site-header"><div class="container nav-shell">{logo(base_path)}
 <form class="header-search" role="search" action="{escape(search_url)}" method="get"><input type="search" name="q" aria-label="Rechercher un tutoriel" placeholder="Rechercher un tuto, un outil…"><button type="submit" aria-label="Lancer la recherche">⌕</button></form>
-<nav class="nav-links" aria-label="Navigation principale"><a href="{escape(base_path)}">Accueil</a><a href="{escape(search_url)}">Vidéos</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a></nav>
+<nav class="nav-links" aria-label="Navigation principale"><a href="{escape(base_path)}">Accueil</a><a href="{escape(search_url)}">Vidéos</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a><a href="{escape(path_url(base_path, 'a-propos/'))}">À propos</a></nav>
 <a class="nav-cta" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer"><span class="yt-mark" aria-hidden="true">▶</span>S’abonner</a>
 <button class="mobile-menu" type="button" aria-label="Ouvrir le menu" aria-expanded="false">☰</button></div>
-<nav class="mobile-nav" aria-label="Menu mobile" hidden><a href="{escape(base_path)}">Accueil</a><a href="{escape(search_url)}">Toutes les vidéos</a><a href="{escape(path_url(base_path, 'catalogue/?categorie=Tests%20%26%20outillage'))}">Tests d’outils</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a></nav></header>
+<nav class="mobile-nav" aria-label="Menu mobile" hidden><a href="{escape(base_path)}">Accueil</a><a href="{escape(search_url)}">Toutes les vidéos</a><a href="{escape(path_url(base_path, 'a-propos/'))}">À propos</a><a href="{escape(path_url(base_path, 'catalogue/?categorie=Tests%20%26%20outillage'))}">Tests d’outils</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a></nav></header>
 <main id="contenu">{content}</main>
 <footer class="footer"><div class="container footer-main"><div>{logo(base_path)}<p>La chaîne d’un bricoleur pour les bricoleurs. Des vidéos pratiques pour apprendre, progresser et réussir ses travaux.</p></div>
-<div><span class="footer-label">EXPLORER</span><a href="{escape(search_url)}">Vidéos & tutoriels</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a><a href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Chaîne YouTube</a><a href="{escape(path_url(base_path, 'feed.xml'))}">Flux des publications</a></div>
+<div><span class="footer-label">EXPLORER</span><a href="{escape(search_url)}">Vidéos & tutoriels</a><a href="{escape(path_url(base_path, 'a-propos/'))}">À propos de la chaîne</a><a href="{escape(path_url(base_path, 'catalogue/?format=court'))}">Shorts</a><a href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Chaîne YouTube</a><a href="{escape(path_url(base_path, 'feed.xml'))}">Flux des publications</a></div>
 <div><span class="footer-label">NOUS CONTACTER</span><a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a><p>Les démonstrations ne remplacent pas les consignes de sécurité, les notices fabricants ni l’intervention d’un professionnel lorsque nécessaire.</p></div></div>
 <div class="container footer-bottom"><span>© {dt.datetime.now().year} La chaîne du bricolage</span><span>Site indépendant, vidéos diffusées via YouTube</span></div></footer>
 <script src="{escape(script)}" defer></script>{analytics_tag}</body></html>'''
@@ -293,10 +293,65 @@ def homepage(videos: list[dict], base_path: str, site_url: str) -> str:
     theme_cards=''.join(f'<a class="theme-card" href="{escape(path_url(base_path, "sujets/" + topic_slug(c) + "/"))}"><span class="theme-glyph" aria-hidden="true">{icon}</span><strong>{escape(label)}</strong></a>' for label, icon,c in themes)
     sections=f'''<section class="section-top"><div class="container"><div class="section-heading"><div><span class="overline">RETROUVEZ VOS SUJETS</span><h2>Qu’est-ce qu’on bricole aujourd’hui ?</h2></div><p>Un sujet, un bon geste, le bon tuto. Explorez la chaîne selon vos besoins.</p></div><div class="theme-grid">{theme_cards}</div>{'<p class="guide-feature"><a href="' + escape(path_url(base_path, 'guides/plomberie-multicouche/')) + '">Commencer la plomberie de sa maison : guide vidéo multicouche ↗</a></p>' if any(v['id'] == '-rfWTS3UIzE' for v in videos) else ''}</div></section>
 <section class="listing-section"><div class="container"><div class="section-heading"><div><span class="overline">LES NOUVEAUTÉS DE LA CHAÎNE</span><h2>Dernières vidéos & Shorts</h2></div><a class="text-link" href="{escape(path_url(base_path, 'catalogue/'))}">Voir toutes les vidéos →</a></div>{render_grid(videos[:9],base_path)}<div class="center-action"><a class="btn btn-dark" href="{escape(path_url(base_path, 'catalogue/'))}">Explorer toutes les vidéos →</a></div></div></section>
-<section class="mission"><div class="container mission-inner"><div class="mission-graphic" aria-hidden="true"><span>APPRENDRE.</span><span>BRICOLER.</span><span>RÉUSSIR.</span></div><div class="mission-copy"><span class="overline">LA PHILOSOPHIE DE LA CHAÎNE</span><h2>Du concret, pour <em>bricoler soi-même.</em></h2><p>Débutant ou passionné, retrouvez des tutos, des essais d’outillage à main et électroportatif, et des explications utiles sans discours promotionnel inutile.</p><a class="btn btn-primary" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Rejoindre la chaîne YouTube →</a></div></div></section>
+<section class="mission"><div class="container mission-inner"><div class="mission-graphic" aria-hidden="true"><span>APPRENDRE.</span><span>BRICOLER.</span><span>RÉUSSIR.</span></div><div class="mission-copy"><span class="overline">LA PHILOSOPHIE DE LA CHAÎNE</span><h2>Du concret, pour <em>bricoler soi-même.</em></h2><p>Débutant ou passionné, retrouvez des tutos, des essais d’outillage à main et électroportatif, et des explications utiles sans discours promotionnel inutile.</p><a class="btn btn-primary" href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">Rejoindre la chaîne YouTube →</a><p><a href="{escape(path_url(base_path, 'a-propos/'))}">Découvrir la chaîne et sa démarche ↗</a></p></div></div></section>
 <section class="newsletter-like"><div class="container closing"><span class="overline">À RETROUVER ICI</span><h2>Une nouvelle vidéo publiée ? <em>Elle arrive ici.</em></h2><p>Le site récupère automatiquement les nouvelles publications YouTube après la mise en ligne et l’activation de la synchronisation.</p><a class="btn btn-dark" href="{escape(path_url(base_path, 'catalogue/'))}">Voir la vidéothèque →</a></div></section>'''
-    schema=json.dumps({'@context':'https://schema.org','@type':'WebSite','name':CHANNEL_NAME,**({'url':site_url} if site_url else {}),'inLanguage':'fr-FR','sameAs':[CHANNEL_URL],'description':'Tutoriels et tests de bricolage, rénovation, plomberie, chauffage et outillage.'},ensure_ascii=False)
-    return layout('La chaîne du bricolage | Tutos, vidéos & Shorts','Tutoriels de bricolage, plomberie, chauffage et rénovation, et tests d’outillage. Retrouvez les nouvelles vidéos et Shorts automatiquement.',header+welcome+sections,base_path,site_url,image=(site_url.rstrip('/')+'/assets/chaine-banniere-couleurs.jpg' if site_url else ''),schema=schema)
+    root = site_url or CHANNEL_URL
+    graph = [
+        {'@type':'WebSite','@id':root+'#website','name':CHANNEL_NAME,
+         'alternateName':['La Chaine du Bricolage','La chaîne du bricolage YouTube'],
+         'url':root,'inLanguage':'fr-FR',
+         'description':'Site officiel de La chaîne du bricolage : tutoriels vidéo gratuits et tests d’outillage.',
+         'publisher':{'@id':root+'#publisher'}},
+        {'@type':'Organization','@id':root+'#publisher','name':CHANNEL_NAME,
+         'url':root,'sameAs':[CHANNEL_URL],
+         'logo':(site_url.rstrip('/')+'/assets/chaine-logo.jpg' if site_url else CHANNEL_URL)},
+        {'@type':'WebPage','@id':root+'#webpage','url':root,
+         'name':'La chaîne du bricolage – Site officiel',
+         'isPartOf':{'@id':root+'#website'},
+         'about':{'@id':root+'#publisher'},'inLanguage':'fr-FR'}
+    ]
+    schema=json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False)
+    return layout('La chaîne du bricolage | Tutoriels et tests d’outillage',
+                  'Site officiel de La chaîne du bricolage : tutoriels vidéo gratuits de plomberie, chauffage, rénovation et tests d’outillage pour bricoler soi-même.',
+                  header+welcome+sections,base_path,site_url,image=(site_url.rstrip('/')+'/assets/chaine-banniere-couleurs.jpg' if site_url else ''),schema=schema)
+
+def about_page(videos: list[dict], base_path: str, site_url: str) -> str:
+    """Informations sur la chaîne, basées sur sa ligne éditoriale et ses vidéos."""
+    root_url = site_url.rsplit('a-propos/', 1)[0] if site_url and 'a-propos/' in site_url else ''
+    topics = ''.join(
+        f'<li><a href="{escape(path_url(base_path, "sujets/" + slug + "/"))}">{escape(label)}</a> : {escape(text)}</li>'
+        for label, (slug, text) in TOPICS.items()
+    )
+    content = f'''<section class="catalog-head"><div class="container">
+<nav aria-label="Fil d’Ariane"><a href="{escape(base_path)}">Accueil</a> / À propos</nav>
+<span class="overline">LE SITE OFFICIEL</span><h1>À propos de La chaîne du bricolage</h1>
+<p>La chaîne du bricolage est une chaîne YouTube francophone de tutoriels de bricolage,
+d’astuces pour la maison et de tests d’outillage à main et électroportatif.</p></div></section>
+<section class="catalog-section"><div class="container"><article class="video-text">
+<h2>Apprendre à bricoler soi-même</h2>
+<p>La chaîne aide les débutants et les passionnés à comprendre les travaux, découvrir
+les outils et réaliser leurs projets grâce à des démonstrations concrètes. Les tutoriels
+alternent avec des présentations d’outillage pour conserver un contenu utile, sans excès promotionnel.</p>
+<h2>Explorer nos sujets</h2><ul>{topics}</ul>
+<h2>Les vidéos officielles, accessibles au même endroit</h2>
+<p>Ce site présente les vidéos publiques de
+<a href="{CHANNEL_URL}" target="_blank" rel="noopener noreferrer">La chaîne du bricolage sur YouTube</a>.
+Chaque vidéo dispose d’une page et les nouvelles publications sont ajoutées automatiquement.
+<a href="{escape(path_url(base_path, 'catalogue/'))}">Parcourir les tutoriels et les Shorts</a>.</p>
+<h2>Sécurité et travaux</h2>
+<p>Pour intervenir en sécurité, consultez les notices fabricants et les règles applicables.
+Les travaux réglementés ou présentant des risques peuvent nécessiter un professionnel qualifié.</p>
+<p>Contact : <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>.</p>
+</article></div></section>'''
+    schema = json.dumps({'@context':'https://schema.org','@type':'AboutPage',
+        'name':'À propos de La chaîne du bricolage','url':site_url,
+        'about':{'@id':root_url+'#publisher' if root_url else '#publisher'},
+        'isPartOf':{'@id':root_url+'#website' if root_url else '#website'},
+        'inLanguage':'fr-FR'},ensure_ascii=False)
+    return layout('À propos de La chaîne du bricolage | Site officiel',
+        'Découvrez La chaîne du bricolage, ses tutoriels vidéo gratuits, ses tests d’outillage et ses sujets : plomberie, chauffage et rénovation.',
+        content,base_path,site_url,schema=schema)
+
 
 def catalogue_page(videos: list[dict], base_path: str, site_url: str) -> str:
     content = f'''<section class="catalog-head"><div class="container"><span class="overline">VIDÉOS & SHORTS</span><h1>Tous les tutos.<br><em>Au même endroit.</em></h1><p>Recherchez dans toutes les vidéos récupérées depuis la chaîne YouTube. Un nouveau contenu est ajouté automatiquement à chaque synchronisation.</p></div></section><section class="catalog-section"><div class="container">{filters()}{render_grid(videos[:24],base_path)}<div class="center-action"><button id="more" class="btn btn-dark" type="button" hidden>Afficher plus de vidéos ↓</button></div><div class="catalog-footnote">Les formats courts sont identifiés à partir du titre ou de la durée lorsqu'elle est disponible. Cette distinction ne correspond pas toujours à la classification officielle des Shorts sur YouTube.</div></div></section>'''
@@ -312,7 +367,13 @@ def topic_page(category: str, videos: list[dict], base_path: str, site_url: str)
     breadcrumb = f'<nav aria-label="Fil d’Ariane"><a href="{escape(base_path)}">Accueil</a> / <a href="{escape(path_url(base_path, "catalogue/"))}">Vidéos</a> / {escape(category)}</nav>'
     content = f'<section class="catalog-head"><div class="container">{breadcrumb}<span class="overline">NOS VIDÉOS PAR SUJET</span><h1>{escape(category)}</h1><p>{escape(subtitle)}</p>{guide_feature}<p>{len(selection)} vidéos et Shorts classés dans cette rubrique.</p></div></section><section class="catalog-section"><div class="container">{render_grid(selection, base_path)}<p><a href="{escape(path_url(base_path, "catalogue/"))}">Voir toutes les vidéos et les autres thèmes ↗</a></p></div></section>'
     schema = json.dumps({'@context':'https://schema.org', '@type':'CollectionPage', 'name':category + ' – La chaîne du bricolage', 'url':site_url, 'description':subtitle, 'inLanguage':'fr-FR'},ensure_ascii=False)
-    return layout(category + ' : tutoriels et vidéos | La chaîne du bricolage',subtitle,content,base_path,site_url,schema=schema)
+    breadcrumb_schema = {'@context':'https://schema.org','@type':'BreadcrumbList',
+        'itemListElement':[
+            {'@type':'ListItem','position':1,'name':'Accueil','item':urllib.parse.urljoin(site_url, base_path)},
+            {'@type':'ListItem','position':2,'name':category,'item':site_url}
+        ]} if site_url else None
+    return layout(category + ' : tutoriels et vidéos | La chaîne du bricolage',subtitle,content,base_path,site_url,
+                  schema=json.dumps([json.loads(schema), breadcrumb_schema],ensure_ascii=False) if breadcrumb_schema else schema)
 
 
 def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> str:
@@ -340,6 +401,7 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
     if site_url:
         schema['mainEntityOfPage'] = site_url
         schema['url'] = site_url
+        schema['publisher']['@id'] = urllib.parse.urljoin(site_url, base_path + '#publisher')
     else:
         schema['url'] = v['url']
     question_html = ('<section class="search-questions"><h2>Vos questions sur ce tutoriel</h2>' +
@@ -352,7 +414,14 @@ def detail_page(v: dict, videos: list[dict], base_path: str, site_url: str) -> s
                   if v['id'] in {'-rfWTS3UIzE', 'X62wo2YUgIA', 'nGJORtAWj3Y'} and any(x['id'] == '-rfWTS3UIzE' for x in videos) else '')
     desc_html = '<p>' + '</p><p>'.join(escape(block).replace('\n', '<br>') for block in re.split(r'\n\s*\n', description[:8000]) if block.strip()) + '</p>'
     content = f'''<section class="detail-head"><div class="container"><a class="back-link" href="{escape(path_url(base_path, 'catalogue/'))}">← Retour aux vidéos</a><span class="overline">{escape(v['category'])}{' · FORMAT COURT' if v['short'] else ''}</span><h1>{escape(display_title)}</h1><div class="detail-meta"><span>La chaîne du bricolage</span>{'<span>·</span><span>' + escape(date_fr(iso)) + '</span>' if iso else ''}</div></div></section><section class="detail-body"><div class="container"><div class="player"><iframe src="https://www.youtube-nocookie.com/embed/{escape(v['id'])}?rel=0" title="Regarder : {escape(display_title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="video-layout"><article class="video-text"><span class="overline">À PROPOS DE CETTE VIDÉO</span><h2>Ce que la chaîne présente</h2><p class="seo-summary">{escape(summary)}</p>{points_html}{timeline_html}{full_html}{question_html}{tag_html}{guide_html}{desc_html}{topic_link}<p>Pour les informations les plus récentes, consultez également la description de la vidéo sur YouTube.</p><a class="btn btn-dark" href="{escape(v['url'])}" target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube ↗</a></article><aside class="side-panel"><span class="overline">À RETENIR</span><h3>Le bricolage en toute confiance</h3><p>Respectez les notices des fabricants, protégez-vous et coupez les alimentations lorsque c'est nécessaire. Certains travaux exigent un professionnel qualifié.</p><a href="{escape(path_url(base_path, 'catalogue/'))}">Explorer d’autres tutoriels ↗</a></aside></div></div></section>{'<section class="related-section"><div class="container"><div class="section-heading"><div><span class="overline">CONTINUER À APPRENDRE</span><h2>À découvrir <em>ensuite</em></h2></div></div>' + render_grid(related,base_path) + '</div></section>' if related else ''}'''
-    return layout(f'{display_title} | La chaîne du bricolage', shorten(summary, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(schema, ensure_ascii=False))
+    breadcrumb_schema = {'@context':'https://schema.org','@type':'BreadcrumbList',
+        'itemListElement':[
+            {'@type':'ListItem','position':1,'name':'Accueil','item':urllib.parse.urljoin(site_url, base_path)},
+            {'@type':'ListItem','position':2,'name':v['category'],'item':urllib.parse.urljoin(site_url, topic_href)},
+            {'@type':'ListItem','position':3,'name':display_title,'item':site_url or v['url']}
+        ]} if site_url else None
+    structured = [schema, breadcrumb_schema] if breadcrumb_schema else schema
+    return layout(f'{display_title} | La chaîne du bricolage', shorten(summary, 155), content, base_path, site_url, image=v['thumbnail'], schema=json.dumps(structured, ensure_ascii=False))
 
 
 def multicouche_guide_page(videos: list[dict], base_path: str, site_url: str) -> str:
@@ -432,6 +501,8 @@ def build(videos: list[dict], site_url: str) -> None:
     (OUTPUT / 'index.html').write_text(homepage(videos, base_path, absolute()), encoding='utf-8')
     (OUTPUT / 'catalogue').mkdir()
     (OUTPUT / 'catalogue' / 'index.html').write_text(catalogue_page(videos, base_path, absolute('catalogue/')), encoding='utf-8')
+    (OUTPUT / 'a-propos').mkdir()
+    (OUTPUT / 'a-propos' / 'index.html').write_text(about_page(videos, base_path, absolute('a-propos/')), encoding='utf-8')
     has_multicouche_guide = any(v['id'] == '-rfWTS3UIzE' for v in videos)
     if has_multicouche_guide:
         guide_folder = OUTPUT / 'guides' / 'plomberie-multicouche'
@@ -459,6 +530,7 @@ def build(videos: list[dict], site_url: str) -> None:
         pages = [
             f'<url><loc>{escape(absolute())}</loc></url>',
             f'<url><loc>{escape(absolute("catalogue/"))}</loc></url>',
+             f'<url><loc>{escape(absolute("a-propos/"))}</loc></url>',
             *(f'<url><loc>{escape(absolute("sujets/" + slug + "/"))}</loc></url>' for slug, _ in TOPICS.values()),
             *([f'<url><loc>{escape(absolute("guides/plomberie-multicouche/"))}</loc></url>'] if has_multicouche_guide else []),
         ]
