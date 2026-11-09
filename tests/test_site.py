@@ -51,8 +51,25 @@ class SiteTests(unittest.TestCase):
                 self.assertIn('<iframe ', page)
                 root = ET.fromstring((site.OUTPUT / 'sitemap.xml').read_text(encoding='utf-8'))
                 ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9', 'v':'http://www.google.com/schemas/sitemap-video/1.1'}
-                self.assertEqual(len(root.findall('s:url', ns)), 3 + len(site.TOPICS))
+                self.assertEqual(len(root.findall('s:url', ns)), 4 + len(site.TOPICS))
                 self.assertEqual(len(root.findall('.//v:video', ns)), 1)
+
+    def test_brand_seo_and_about_page(self):
+        from unittest import mock
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(site, 'OUTPUT', Path(tmp) / 'public'):
+                site.build([self.a], 'https://example.org/repo/')
+                home = (site.OUTPUT / 'index.html').read_text(encoding='utf-8')
+                about = (site.OUTPUT / 'a-propos' / 'index.html').read_text(encoding='utf-8')
+                video = (site.OUTPUT / 'videos' / self.a['id'] / 'index.html').read_text(encoding='utf-8')
+                sitemap = (site.OUTPUT / 'sitemap.xml').read_text(encoding='utf-8')
+                self.assertIn('La chaîne du bricolage | Tutoriels et tests', home)
+                self.assertIn('https://schema.org', home)
+                self.assertIn('Organization', home)
+                self.assertIn('À propos de La chaîne du bricolage', about)
+                self.assertIn('BreadcrumbList', video)
+                self.assertIn('/repo/a-propos/', sitemap)
 
     def test_v3_titles_points_and_chapters(self):
         video = dict(self.a, title='les différents types de foret #shorts #bricolage',
