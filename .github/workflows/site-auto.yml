@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
   pages: write
   id-token: write
 
@@ -22,15 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deploiement.outputs.page_url }}
+      url: ${{ steps.deploiement_retry.outputs.page_url || steps.deploiement.outputs.page_url }}
     steps:
       - name: Récupérer les sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: true
 
       - name: Installer Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -77,16 +78,61 @@ jobs:
           fi
 
       - name: Configurer GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Préparer les fichiers à publier
-        uses: actions/upload-pages-artifact@v4
+        id: archive
+        uses: actions/upload-pages-artifact@v5
         with:
+          name: github-pages-${{ github.run_attempt }}
           path: site
+
+      - name: Attendre la disponibilité du fichier de publication
+        shell: bash
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.archive.outputs.artifact_id }}
+          ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
+        run: |
+          if [[ ! "$ARTIFACT_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::Identifiant du fichier de publication absent ou invalide."
+            exit 1
+          fi
+          endpoint="repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?name=$ARTIFACT_NAME"
+          for delay in 5 10 15 20 30 30 30; do
+            sleep "$delay"
+            if response=$(gh api --method GET "$endpoint") &&
+              jq -e --arg id "$ARTIFACT_ID" --arg name "$ARTIFACT_NAME" \
+                '[.artifacts[] | select(.name == $name and .expired == false)] | length == 1 and (.[0].id | tostring) == $id' \
+                <<< "$response" >/dev/null; then
+              echo "Fichier de publication disponible : $ARTIFACT_ID"
+              sleep 5
+              exit 0
+            fi
+            echo "::notice::Fichier pas encore visible ; nouvelle vérification."
+          done
+          echo "::error::Le fichier de publication reste indisponible après plusieurs vérifications."
+          exit 1
 
       - name: Mettre le site en ligne
         id: deploiement
-        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
+
+      - name: Attendre avant de réessayer la publication
+        if: ${{ steps.deploiement.outcome == 'failure' }}
+        shell: bash
+        run: sleep 30
+
+      - name: Réessayer la publication
+        id: deploiement_retry
+        if: ${{ steps.deploiement.outcome == 'failure' }}
+        uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_attempt }}
 
       - name: Prévenir Bing et les moteurs compatibles IndexNow
         env:
